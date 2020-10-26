@@ -72,6 +72,25 @@ custom:
 functions:
   write_policy:
     handler: lambdas.write_policy.handler.write_policy
+    description: "Lambda for Policy Sentry's write policy command"
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  query_actions:
+    handler: lambdas.query_actions.handler.query_actions
+    description: "Lambda for Policy Sentry's query action table command"
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  query_resources:
+    handler: lambdas.query_resources.handler.query_resources
+    description: "Lambda for Policy Sentry's query ARN table command"
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  query_conditions:
+    handler: lambdas.query_conditions.handler.query_conditions
+    description: "Lambda for Policy Sentry's query conditions table command"
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details

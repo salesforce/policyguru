@@ -69,11 +69,7 @@ def write_crud_policy(request_data):
 
 def write_policy(event, context):
     # TODO: Validate request data
-    request_data = {
-        "mode": "crud",
-        "read": ["arn:aws:s3:::example-org-s3-access-logs", "arn:aws:s3:::mybucket"],
-    }
-    body = write_crud_policy(request_data)
+    body = write_crud_policy(event)
 
     response = {"statusCode": 200, "body": json.dumps(body)}
     # print(json.dumps(body, indent=4))

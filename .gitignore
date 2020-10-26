@@ -1,6 +1,7 @@
 # Working directories
 tmp
 !.gitkeep
+unzip_requirements.py
 
 # IDEs
 .idea
