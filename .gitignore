@@ -15,6 +15,7 @@ tmp
 node_modules/
 
 # Python
+.coverage
 .Python
 __pycache__/
 *.py[cod]
