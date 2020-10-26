@@ -16,6 +16,9 @@ node_modules/
 
 # Python
 .Python
+__pycache__/
+*.py[cod]
+*$py.class
 env/
 build/
 develop-eggs/
