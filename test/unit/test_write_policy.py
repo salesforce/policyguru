@@ -9,13 +9,11 @@ class TestWritePolicy(unittest.TestCase):
             "mode": "crud",
             "read": [
                 "arn:aws:s3:::example-org-s3-access-logs",
-                "arn:aws:s3:::mybucket"
             ]
         }
-        result = write_policy(this_event, "test")
-        policy = json.loads(result.get("body"))
-        print(result)
-        print(policy)
-        self.assertTrue(result.get("statusCode") == 200)
+        response = write_policy(this_event, "test")
+        policy = json.loads(response.get("body"))
+        self.assertTrue(response.get("statusCode") == 200)
         self.assertTrue(policy['Statement'][0]['Sid'] == "S3ReadBucket")
         self.assertTrue(len(policy['Statement'][0]['Action']) > 20)
+        self.assertTrue(len(policy["Statement"][0]["Resource"]) == 1)
