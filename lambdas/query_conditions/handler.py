@@ -11,8 +11,8 @@ logger = logging.getLogger()
 
 def query_conditions(event, context):
     # TODO: Validate request data
-    service = event.get('service')
-    name = event.get('name', None)
+    service = (event["queryStringParameters"]).get('service')
+    name = event["queryStringParameters"].get('name', None)
 
     body = query_condition_table(name, service)
 

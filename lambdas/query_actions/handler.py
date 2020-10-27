@@ -11,11 +11,11 @@ logger = logging.getLogger()
 
 def query_actions(event, context):
     # TODO: Validate request data
-    service = event.get('service')
-    name = event.get('name', None)
-    access_level = event.get('access_level', None)
-    condition = event.get('condition', None)
-    resource_type = event.get('resource_type', None)
+    service = (event["queryStringParameters"]).get('service')
+    name = event["queryStringParameters"].get('name', None)
+    access_level = event["queryStringParameters"].get('access_level', None)
+    condition = event["queryStringParameters"].get('condition', None)
+    resource_type = event["queryStringParameters"].get('resource_type', None)
 
     body = query_action_table(name, service, access_level, condition, resource_type)
 
