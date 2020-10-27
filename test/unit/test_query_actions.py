@@ -6,8 +6,10 @@ from lambdas.query_actions.handler import query_actions
 class TestQueryActions(unittest.TestCase):
     def test_query_actions(self):
         this_event = {
-            "service": "s3",
-            "name": "GetObject",
+            "queryStringParameters": {
+                "service": "s3",
+                "name": "GetObject",
+            }
         }
         response = query_actions(this_event, "test")
         self.assertTrue(response.get("statusCode") == 200)
