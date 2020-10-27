@@ -6,8 +6,10 @@ from lambdas.query_resources.handler import query_resources
 class TestQueryResources(unittest.TestCase):
     def test_query_resources(self):
         this_event = {
-            "service": "s3",
-            "list_arn_types": True,
+            "queryStringParameters": {
+                "service": "s3",
+                "list_arn_types": True,
+            }
         }
         response = query_resources(this_event, "test")
         self.assertTrue(response.get("statusCode") == 200)

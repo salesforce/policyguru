@@ -6,8 +6,10 @@ from lambdas.query_conditions.handler import query_conditions
 class TestQueryConditions(unittest.TestCase):
     def test_query_conditions(self):
         this_event = {
-            "service": "secretsmanager",
-            # "name": ""
+            "queryStringParameters": {
+                "service": "secretsmanager",
+                # "name": ""
+            }
 
         }
         response = query_conditions(this_event, "test")
