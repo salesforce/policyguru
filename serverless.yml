@@ -76,6 +76,15 @@ functions:
     description: "Lambda for Policy Sentry's write policy command"
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
+  scan_policy:
+    handler: lambdas.cloudsplaining_scan_policy.handler.cloudsplaining_scan_policy
+    description: "Scan a policy file with Cloudsplaining"
+    events:
+      - http:
+          path: scan
+          method: get
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
   query_resources:
     handler: lambdas.query_resources.handler.query_resources
     description: "Lambda for Policy Sentry's query ARN table command"
