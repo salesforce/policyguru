@@ -1,4 +1,6 @@
 {
-  "service": "s3",
-  "name": "GetObject"
+  "queryStringParameters": {
+      "service": "s3",
+      "name": "GetObject"
+  }
 }

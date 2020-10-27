@@ -12,9 +12,9 @@ logger = logging.getLogger()
 
 def query_resources(event, context):
     # TODO: Validate request data
-    service = event.get('service')
-    name = event.get('name', None)
-    list_arn_types = event.get('list_arn_types', None)
+    service = (event["queryStringParameters"]).get('service')
+    name = event["queryStringParameters"].get('name', None)
+    list_arn_types = (event["queryStringParameters"]).get('list_arn_types', None)
 
     body = query_arn_table(name, service, list_arn_types, fmt=json)
 
