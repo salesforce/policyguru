@@ -22,5 +22,5 @@ jobs:
 
       - run: invoke test.format
       - run: invoke unit.pytest
-#      - run: invoke test.lint
+      - run: invoke test.lint
       - run: invoke test.security
