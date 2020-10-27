@@ -73,12 +73,12 @@ custom:
 functions:
   write_policy:
     handler: lambdas.write_policy.handler.write_policy
-    description: "Endpoint for Policy Sentry's write policy command"
+    description: "Lambda for Policy Sentry's write policy command"
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
   query_resources:
     handler: lambdas.query_resources.handler.query_resources
-    description: "Endpoint for Policy Sentry's query ARN table command"
+    description: "Lambda for Policy Sentry's query ARN table command"
     events:
       - http:
           path: query/resources
@@ -87,7 +87,7 @@ functions:
       - {Ref: PythonRequirementsLambdaLayer}
   query_conditions:
     handler: lambdas.query_conditions.handler.query_conditions
-    description: "Endpoint for Policy Sentry's query conditions table command"
+    description: "Lambda for Policy Sentry's query conditions table command"
     events:
       - http:
           path: query/conditions
@@ -96,7 +96,7 @@ functions:
       - {Ref: PythonRequirementsLambdaLayer}
   query_actions:
     handler: lambdas.query_actions.handler.query_actions
-    description: "Endpoint for Policy Sentry's query actions table command"
+    description: "Lambda for Policy Sentry's query actions table command"
     events:
       - http:
           path: query/actions
