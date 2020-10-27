@@ -17,21 +17,21 @@ class TestScanPolicy(unittest.TestCase):
                 }
             ]
         }
-        this_event = {
-            "queryStringParameters": {
-                "policy_document": this_policy_document,
-                "include_actions": [
-                    "s3:GetObject",
-                    "ssm:GetParameter",
-                    "ssm:GetParameters",
-                    "ssm:GetParametersByPath",
-                    "secretsmanager:GetSecretValue",
-                    "rds:CopyDBSnapshot",
-                    "rds:CreateDBSnapshot"
-                ],
-                "exclude_actions": []
-            }
+        payload = {
+            "policy_document": this_policy_document,
+            "include_actions": [
+                "s3:GetObject",
+                "ssm:GetParameter",
+                "ssm:GetParameters",
+                "ssm:GetParametersByPath",
+                "secretsmanager:GetSecretValue",
+                "rds:CopyDBSnapshot",
+                "rds:CreateDBSnapshot"
+            ],
+            "exclude_actions": []
         }
+        this_event = {"body": json.dumps(payload)}
+        print (this_event)
         response = cloudsplaining_scan_policy(this_event, "test")
         print(response)
         result = json.loads(response.get("body"))

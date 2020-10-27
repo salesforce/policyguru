@@ -14,7 +14,7 @@ def query_resources(event, context):
     # TODO: Validate request data
     service = (event["queryStringParameters"]).get('service')
     name = event["queryStringParameters"].get('name', None)
-    list_arn_types = (event["queryStringParameters"]).get('list_arn_types', None)
+    list_arn_types = (event["queryStringParameters"]).get('list_arn_types', False)
 
     body = query_arn_table(name, service, list_arn_types, fmt=json)
 

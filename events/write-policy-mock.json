@@ -1,7 +1,3 @@
 {
-  "mode": "crud",
-  "read": [
-    "arn:aws:s3:::example-org-s3-access-logs",
-    "arn:aws:s3:::mybucket"
-  ]
+  "body": "{\n    \"mode\": \"crud\",\n    \"read\": [\n      \"arn:aws:s3:::mybucket\"\n    ]\n}"
 }

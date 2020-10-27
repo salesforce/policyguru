@@ -11,9 +11,10 @@ logger = logging.getLogger()
 
 
 def cloudsplaining_scan_policy(event, context):
-    policy_document = (event["queryStringParameters"]).get('policy_document')
-    include_actions = (event["queryStringParameters"]).get('include_actions')
-    exclude_actions = (event["queryStringParameters"]).get('exclude_actions')
+    request_data = json.loads(event.get('body'))
+    policy_document = request_data.get('policy_document')
+    include_actions = request_data.get('include_actions')
+    exclude_actions = request_data.get('exclude_actions')
 
     # If include_actions is not included in the request, then just give it the default values.
     if not include_actions:
@@ -52,20 +53,19 @@ if __name__ == "__main__":
             }
         ]
     }
-    this_event = {
-        "queryStringParameters": {
-            "policy_document": this_policy_document,
-            "include_actions": [
-                "s3:GetObject",
-                "ssm:GetParameter",
-                "ssm:GetParameters",
-                "ssm:GetParametersByPath",
-                "secretsmanager:GetSecretValue",
-                "rds:CopyDBSnapshot",
-                "rds:CreateDBSnapshot"
-            ],
-            "exclude_actions": []
-        }
+    payload = {
+        "policy_document": this_policy_document,
+        "include_actions": [
+            "s3:GetObject",
+            "ssm:GetParameter",
+            "ssm:GetParameters",
+            "ssm:GetParametersByPath",
+            "secretsmanager:GetSecretValue",
+            "rds:CopyDBSnapshot",
+            "rds:CreateDBSnapshot"
+        ],
+        "exclude_actions": []
     }
+    this_event = {"body": json.dumps(payload)}
 
     cloudsplaining_scan_policy(this_event, "test")
