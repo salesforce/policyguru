@@ -86,5 +86,5 @@ if __name__ == "__main__":
             "arn:aws:s3:::mybucket"
         ]
     }
-    this_event = {"body": json.loads(payload)}
+    this_event = {"body": json.dumps(payload)}
     write_policy(this_event, "test")
