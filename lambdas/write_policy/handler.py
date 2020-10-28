@@ -11,7 +11,7 @@ logger = logging.getLogger()
 
 
 def write_crud_policy(event, context):
-    request_data = json.loads(event["body"])
+    request_data = event.get("body")
     crud_template = {
         "mode": "crud",
     }
@@ -63,7 +63,7 @@ def write_crud_policy(event, context):
         )
 
     output = write_policy_with_template(crud_template)
-    #logger.info(output)
+    # logger.info(output)
     return output
 
 
@@ -71,7 +71,8 @@ def write_policy(event, context):
     # TODO: Validate request data
     body = write_crud_policy(event, context)
 
-    response = {"statusCode": 200, "body": json.dumps(body)}
+    # response = {"statusCode": 200, "body": json.dumps(body)}
+    response = {"statusCode": 200, "body": body}
     # print(json.dumps(body, indent=4))
     # TODO: output more useful log details
     # print(body)
@@ -86,5 +87,8 @@ if __name__ == "__main__":
             "arn:aws:s3:::mybucket"
         ]
     }
-    this_event = {"body": json.dumps(payload)}
-    write_policy(this_event, "test")
+    # this_event = {"body": json.dumps(payload)}
+    this_event = {"body": payload}
+    this_response = write_policy(this_event, "test")
+    print("This is a demo")
+    print(this_response)

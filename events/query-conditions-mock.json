@@ -1,5 +1,5 @@
 {
    "queryStringParameters": {
-      "service": "s3"
+      "service": "secretsmanager"
   }
 }

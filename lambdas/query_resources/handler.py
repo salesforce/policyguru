@@ -26,9 +26,13 @@ def query_resources(event, context):
 
 if __name__ == "__main__":
     this_event = {
-        # "name": "",
-    "service":  "s3",
-    "list_arn_types": True,
+        "queryStringParameters": {
+            "service":  "s3",
+            "list_arn_types": True,
+            # "name": "",
+        }
     }
 
-    query_resources(this_event, "test")
+    response = query_resources(this_event, "test")
+    print("This is a demo")
+    print(response)

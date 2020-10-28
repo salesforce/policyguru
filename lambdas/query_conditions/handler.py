@@ -24,8 +24,12 @@ def query_conditions(event, context):
 
 if __name__ == "__main__":
     this_event = {
-        # "name": "",
-        "service":  "s3",
+        "queryStringParameters": {
+            # "name": "",
+            "service":  "s3",
+        }
     }
 
-    query_conditions(this_event, "test")
+    response = query_conditions(this_event, "test")
+    print("This is a demo")
+    print(response)

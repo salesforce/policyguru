@@ -11,7 +11,7 @@ logger = logging.getLogger()
 
 
 def cloudsplaining_scan_policy(event, context):
-    request_data = json.loads(event.get('body'))
+    request_data = event.get('body')
     policy_document = request_data.get('policy_document')
     include_actions = request_data.get('include_actions')
     exclude_actions = request_data.get('exclude_actions')
@@ -36,7 +36,8 @@ def cloudsplaining_scan_policy(event, context):
     }
     body = scan_policy(policy_document, exclusions_cfg)
 
-    response = {"statusCode": 200, "body": json.dumps(body)}
+    # response = {"statusCode": 200, "body": json.dumps(body)}
+    response = {"statusCode": 200, "body": body}
     return response
 
 
@@ -66,6 +67,9 @@ if __name__ == "__main__":
         ],
         "exclude_actions": []
     }
-    this_event = {"body": json.dumps(payload)}
+    # this_event = {"body": json.dumps(payload)}
+    this_event = {"body": payload}
 
-    cloudsplaining_scan_policy(this_event, "test")
+    response = cloudsplaining_scan_policy(this_event, "test")
+    print("this is a demo")
+    print(response)
