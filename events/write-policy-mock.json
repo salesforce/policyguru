@@ -1,7 +1,8 @@
 {
-  "mode": "crud",
-  "read": [
-    "arn:aws:s3:::example-org-s3-access-logs",
-    "arn:aws:s3:::mybucket"
-  ]
+  "body": {
+    "mode": "crud",
+    "read": [
+      "arn:aws:s3:::mybucket"
+    ]
+  }
 }

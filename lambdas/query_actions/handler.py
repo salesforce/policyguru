@@ -27,11 +27,15 @@ def query_actions(event, context):
 
 if __name__ == "__main__":
     this_event = {
-        "name": "GetObject",
-        "service":  "s3",
-        # "access_level": "",
-        # "condition": ""
-        # "resource_type": "",
+        "queryStringParameters": {
+            "name": "GetObject",
+            "service":  "s3",
+            # "access_level": "",
+            # "condition": ""
+            # "resource_type": "",
+        }
     }
 
-    query_actions(this_event, "test")
+    response = query_actions(this_event, "test")
+    print("This is a demo")
+    print(response)

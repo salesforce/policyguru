@@ -74,6 +74,10 @@ functions:
   write_policy:
     handler: lambdas.write_policy.handler.write_policy
     description: "Lambda for Policy Sentry's write policy command"
+    events:
+      - http:
+          path: write
+          method: post
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
   scan_policy:
@@ -82,7 +86,7 @@ functions:
     events:
       - http:
           path: scan
-          method: get
+          method: post
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
   query_resources:
