@@ -7,6 +7,9 @@ on: [push, pull_request]
 jobs:
   ci:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
     steps:
       - uses: actions/checkout@v2
 
@@ -20,7 +23,13 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
+      - name: Install Node.js
+          uses: actions/setup-node@v1
+          with:
+            node-version: ${{ matrix.node-version }}
+
       - run: invoke test.format
       - run: invoke unit.pytest
 #     - run: invoke test.lint
       - run: invoke test.security
+      - run: invoke integration.serverless-invoke
