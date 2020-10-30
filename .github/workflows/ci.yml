@@ -20,7 +20,13 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
       - run: invoke test.format
       - run: invoke unit.pytest
 #     - run: invoke test.lint
       - run: invoke test.security
+      - run: invoke integration.serverless-invoke
