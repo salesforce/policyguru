@@ -25,6 +25,10 @@ jobs:
         with:
           node-version: 12.x
 
+      - name: Install serverless
+        run: |
+          npm install -g serverless
+
       - run: invoke test.format
       - run: invoke unit.pytest
 #     - run: invoke test.lint
