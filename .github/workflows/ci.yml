@@ -26,7 +26,8 @@ jobs:
           node-version: 12.x
 
       - name: Install serverless
-          uses: serverless/github-action@master
+        run: |
+          npm install -g serverless
 
       - run: invoke test.format
       - run: invoke unit.pytest
