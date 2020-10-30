@@ -28,6 +28,7 @@ jobs:
       - name: Install serverless
         run: |
           npm install -g serverless
+          npm install
 
       - run: invoke test.format
       - run: invoke unit.pytest
