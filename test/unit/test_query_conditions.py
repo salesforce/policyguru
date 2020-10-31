@@ -2,9 +2,20 @@ import unittest
 import json
 import os
 from lambdas.query_conditions.handler import query_conditions
+from lambdas.local_app import app
+
+mock_events_folder = os.path.join(
+    os.path.dirname(__file__),
+    os.path.pardir,
+    os.path.pardir,
+    "events",
+)
 
 
 class TestQueryConditions(unittest.TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+
     def test_query_conditions(self):
         this_event = {
             "queryStringParameters": {
@@ -48,6 +59,23 @@ class TestQueryConditions(unittest.TestCase):
 
         response = query_conditions(mock_event, "test")
         self.assertTrue(response.get("statusCode") == 200)
+        result = json.loads(response.get("body"))
+        print(json.dumps(result, indent=4))
+        self.assertTrue(len(result) > 13)
+        # Ensure that the content of the results contains one of the expected values
+        self.assertTrue("secretsmanager:KmsKeyId" in result)
+
+    def test_query_conditions_flask(self):
+        # Given
+        mock_file = os.path.join(mock_events_folder, "query-conditions-mock.json")
+        with open(mock_file) as f:
+            mock_data = json.load(f)
+        payload = json.dumps(mock_data)
+
+        # When
+        response = self.app.get("/query/conditions", headers={"Content-Type": "application/json"}, data=payload)
+        response = response.json
+        # print(json.dumps(response, indent=4))
         result = json.loads(response.get("body"))
         print(json.dumps(result, indent=4))
         self.assertTrue(len(result) > 13)
