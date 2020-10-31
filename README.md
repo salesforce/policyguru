@@ -53,3 +53,18 @@ sls invoke -f query_resources --path events/query-resources-mock.json
 sls invoke -f query_conditions --path events/query-conditions-mock.json
 ```
 
+### Local Flask API
+
+We set up a Flask API option for local testing and development purposes - particularly for testing out the UI.
+
+* First, install Dev dependencies so we can use Flask
+
+```bash
+pip3 install -r requirements-dev.txt
+```
+
+* Then run the Flask API locally
+
+```bash
+python3 local_run.py
+```

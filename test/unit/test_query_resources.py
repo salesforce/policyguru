@@ -2,9 +2,20 @@ import unittest
 import os
 import json
 from lambdas.query_resources.handler import query_resources
+from lambdas.local_app import app
+
+mock_events_folder = os.path.join(
+    os.path.dirname(__file__),
+    os.path.pardir,
+    os.path.pardir,
+    "events",
+)
 
 
 class TestQueryResources(unittest.TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+
     def test_query_resources(self):
         this_event = {
             "queryStringParameters": {
@@ -35,6 +46,21 @@ class TestQueryResources(unittest.TestCase):
 
         response = query_resources(mock_event, "test")
         self.assertTrue(response.get("statusCode") == 200)
+        result = json.loads(response.get("body"))
+        for arn_type in ["accesspoint", "bucket", "object", "job"]:
+            self.assertTrue(result.get(arn_type))
+
+    def test_query_resources_flask(self):
+        # Given
+        mock_file = os.path.join(mock_events_folder, "query-resources-mock.json")
+        with open(mock_file) as f:
+            mock_data = json.load(f)
+        payload = json.dumps(mock_data)
+
+        # When
+        response = self.app.get("/query/resources", headers={"Content-Type": "application/json"}, data=payload)
+        response = response.json
+        # print(json.dumps(response, indent=4))
         result = json.loads(response.get("body"))
         for arn_type in ["accesspoint", "bucket", "object", "job"]:
             self.assertTrue(result.get(arn_type))
