@@ -1,16 +1,3 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
-
 service: policy-sentry
 
 frameworkVersion: '2'
@@ -28,13 +15,11 @@ custom:
       description: Layer for Policy Sentry API
       compatibleRuntimes:
         - python3.6
-  wsgi:
-    app: lambdas.local_app.app
-    packRequirements: false
 
-# you can overwrite defaults here
-  stage: stage
-  region: us-east-2
+#  siteName: policy-site-sls
+#  s3Sync:
+#    - bucketName: policy-site-sls
+#      localDir: static
 
 functions:
   write_policy:
@@ -82,19 +67,47 @@ functions:
           method: get
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
-  policy_ui:
-    handler: wsgi_handler.handler
-    events:
-      - http:
-          path: policy_ui
-          method: get
-  policy_write:
-    handler: lambdas.write_policy.handler.write_policy
-    events:
-      - http:
-          path: call_policy
-          method: post
+#  policy_write:
+#    handler: lambdas.write_policy.handler.write_policy
+#    events:
+#      - http:
+#          path: call_policy
+#          method: post
+#    layers:
+#      - {Ref: PythonRequirementsLambdaLayer}
+
+#resources:
+#  Resources:
+#    StaticSite:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        AccessControl: PublicRead
+#        BucketName: ${self:custom.siteName}
+#        WebsiteConfiguration:
+#          IndexDocument: index.html
+#    StaticSiteS3BucketPolicy:
+#      Type: AWS::S3::BucketPolicy
+#      Properties:
+#        Bucket:
+#          Ref: StaticSite
+#        PolicyDocument:
+#          Statement:
+#            - Sid: PublicReadGetObject
+#              Effect: Allow
+#              Principal: "*"
+#              Action:
+#                - s3:GetObject
+#              Resource:
+#                Fn::Join: [
+#                  "", [
+#                  "arn:aws:s3:::",
+#                  {
+#                    "Ref": "StaticSite"
+#                  },
+#                  "/*"
+#                ]
+#                ]
 
 plugins:
   - serverless-python-requirements
-  - serverless-wsgi
+  - serverless-s3-sync
