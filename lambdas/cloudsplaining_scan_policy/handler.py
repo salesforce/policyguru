@@ -36,8 +36,7 @@ def cloudsplaining_scan_policy(event, context):
     }
     body = scan_policy(policy_document, exclusions_cfg)
 
-    # response = {"statusCode": 200, "body": json.dumps(body)}
-    response = {"statusCode": 200, "body": body}
+    response = {"statusCode": 200, "body": json.dumps(body)}
     return response
 
 
