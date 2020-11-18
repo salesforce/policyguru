@@ -72,8 +72,7 @@ def write_policy(event, context):
     # TODO: Validate request data
     body = write_crud_policy(event, context)
 
-    response = {"statusCode": 200, "body": json.dumps(body)}
-    #response = {"statusCode": 200, "body": body}
+    response = {"statusCode": 200, "body": body}
     # print(json.dumps(body, indent=4))
     # TODO: output more useful log details
     # print(body)
