@@ -31,8 +31,7 @@ class TestScanPolicy(unittest.TestCase):
             ],
             "exclude_actions": []
         }
-        # this_event = {"body": json.dumps(payload)}
-        this_event = {"body": payload}
+        this_event = {"body": json.dumps(payload)}
         print(this_event)
         response = cloudsplaining_scan_policy(this_event, "test")
         print(response)

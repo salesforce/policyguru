@@ -7,12 +7,12 @@ from lambdas.write_policy.handler import write_policy
 class TestWritePolicy(unittest.TestCase):
     def test_write_policy(self):
         this_event = {
-            "body": {
+            "body": json.dumps({
                 "mode": "crud",
                 "read": [
                     "arn:aws:s3:::example-org-s3-access-logs",
                 ]
-            }
+            })
         }
         # this_event = {"body": json.dumps(payload)}
         response = write_policy(this_event, "test")

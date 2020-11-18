@@ -11,7 +11,7 @@ logger = logging.getLogger()
 
 
 def cloudsplaining_scan_policy(event, context):
-    request_data = event.get('body')
+    request_data = json.loads(event.get("body"))
     policy_document = request_data.get('policy_document')
     include_actions = request_data.get('include_actions')
     exclude_actions = request_data.get('exclude_actions')
