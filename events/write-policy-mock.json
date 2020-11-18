@@ -1,3 +1,3 @@
 {
-  "body": "{\\r\\n    \\\"mode\\\": \\\"crud\\\",\\r\\n    \\\"read\\\": [\\r\\n      \\\"arn:aws:s3:::mybucket\\\"\\r\\n    ]\\r\\n  }"
+  "body": "{\r\n    \"mode\": \"crud\",\r\n    \"read\": [\r\n      \"arn:aws:s3:::mybucket\"\r\n    ]\r\n  }"
 }
