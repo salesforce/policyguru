@@ -60,7 +60,7 @@ class TestWritePolicy(unittest.TestCase):
         print(json.dumps(response.json, indent=4))
         self.assertEqual(200, response.status_code)
 
-        policy = response.json.get("body")
+        policy = json.loads(response.json.get("body"))
         self.assertTrue(response.json.get("statusCode") == 200)
         self.assertTrue(policy['Statement'][0]['Sid'] == "S3ReadBucket")
         self.assertTrue(len(policy['Statement'][0]['Action']) > 20)
