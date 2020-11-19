@@ -79,6 +79,28 @@ def write_policy(event, context):
     return response
 
 
+def ui_response_handler(event, context):
+    output_data = {'mode': 'crud', 'name': '', 'read': [],
+                   'write': [],
+                   'list': [],
+                   'tagging': [],
+                   'permissions-management': [],
+                   'wildcard-only': {'single-actions': [], 'service-read': [], 'service-write': [],
+                                     'service-list': [], 'service-tagging': [],
+                                     'service-permissions-management': []}}
+    for key,val in event.items():
+        indx = key.split('_')[-1]
+        if 'arn' in key:
+            if key.startswith('action'):
+                action_name = event['action_name_'+indx]
+                update_data = output_data
+            else:
+                action_name = event['wc_name_'+indx]
+                update_data = output_data['wildcard-only']
+            val = list(map(lambda x:x.strip(), val.split(',')))
+            update_data[action_name].extend(val)
+    return write_policy_with_template(output_data)
+
 if __name__ == "__main__":
     payload = {
         "mode": "crud",
