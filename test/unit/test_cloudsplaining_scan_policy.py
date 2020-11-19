@@ -77,7 +77,6 @@ class TestScanPolicy(unittest.TestCase):
 
         # Then
         expected_response = {
-            "body": {
                 "CredentialsExposure": [],
                 "DataExfiltration": [
                     "s3:GetObject"
@@ -91,8 +90,6 @@ class TestScanPolicy(unittest.TestCase):
                 "ServicesAffected": [
                     "s3"
                 ]
-            },
-            "statusCode": 200
-        }
+            }
         self.assertEqual(200, response.status_code)
-        self.assertEqual(response.json, expected_response)
+        self.assertEqual(json.loads(response.json.get("body")), expected_response)
