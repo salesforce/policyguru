@@ -1,26 +1,3 @@
 {
-  "body": {
-    "policy_document": {
-      "Version": "2012-10-17",
-      "Statement": [
-        {
-          "Effect": "Allow",
-          "Action": [
-            "s3:GetObject"
-          ],
-          "Resource": "*"
-        }
-      ]
-    },
-    "include_actions": [
-      "s3:GetObject",
-      "ssm:GetParameter",
-      "ssm:GetParameters",
-      "ssm:GetParametersByPath",
-      "secretsmanager:GetSecretValue",
-      "rds:CopyDBSnapshot",
-      "rds:CreateDBSnapshot"
-    ],
-    "exclude_actions": []
-  }
+  "body": "{\r\n    \"policy_document\": {\r\n      \"Version\": \"2012-10-17\",\r\n      \"Statement\": [\r\n        {\r\n          \"Effect\": \"Allow\",\r\n          \"Action\": [\r\n            \"s3:GetObject\"\r\n          ],\r\n          \"Resource\": \"*\"\r\n        }\r\n      ]\r\n    },\r\n    \"include_actions\": [\r\n      \"s3:GetObject\",\r\n      \"ssm:GetParameter\",\r\n      \"ssm:GetParameters\",\r\n      \"ssm:GetParametersByPath\",\r\n      \"secretsmanager:GetSecretValue\",\r\n      \"rds:CopyDBSnapshot\",\r\n      \"rds:CreateDBSnapshot\"\r\n    ],\r\n    \"exclude_actions\": []\r\n  }"
 }

@@ -18,17 +18,17 @@ class TestWritePolicy(unittest.TestCase):
 
     def test_write_policy(self):
         this_event = {
-            "body": {
+            "body": json.dumps({
                 "mode": "crud",
                 "read": [
                     "arn:aws:s3:::example-org-s3-access-logs",
                 ]
-            }
+            })
         }
         # this_event = {"body": json.dumps(payload)}
         response = write_policy(this_event, "test")
         # policy = json.loads(response.get("body"))
-        policy = response.get("body")
+        policy = json.loads(response.get("body"))
         self.assertTrue(response.get("statusCode") == 200)
         print(response)
         self.assertTrue(policy['Statement'][0]['Sid'] == "S3ReadBucket")
@@ -42,7 +42,7 @@ class TestWritePolicy(unittest.TestCase):
 
         response = write_policy(mock_data, "test")
         # policy = json.loads(response.get("body"))
-        policy = response.get("body")
+        policy = json.loads(response.get("body"))
         self.assertTrue(response.get("statusCode") == 200)
         self.assertTrue(policy['Statement'][0]['Sid'] == "S3ReadBucket")
         self.assertTrue(len(policy['Statement'][0]['Action']) > 20)

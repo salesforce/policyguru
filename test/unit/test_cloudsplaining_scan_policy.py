@@ -42,12 +42,11 @@ class TestScanPolicy(unittest.TestCase):
             ],
             "exclude_actions": []
         }
-        # this_event = {"body": json.dumps(payload)}
-        this_event = {"body": payload}
+        this_event = {"body": json.dumps(payload)}
         print(this_event)
         response = cloudsplaining_scan_policy(this_event, "test")
         print(response)
-        result = response.get("body")
+        result = json.loads(response.get("body"))
         self.assertTrue(result["ServicesAffected"][0] == "s3")
         self.assertTrue(result["DataExfiltration"][0] == "s3:GetObject")
 
@@ -60,7 +59,7 @@ class TestScanPolicy(unittest.TestCase):
 
         response = cloudsplaining_scan_policy(mock_event, "test")
         print(response)
-        result = response.get("body")
+        result = json.loads(response.get("body"))
         self.assertTrue(result["ServicesAffected"][0] == "s3")
         self.assertTrue(result["DataExfiltration"][0] == "s3:GetObject")
 
