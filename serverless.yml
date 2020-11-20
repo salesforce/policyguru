@@ -33,9 +33,9 @@ custom:
         - python3.7
         - python3.8
   siteName: policy-site-sls
-    s3Sync:
-    - bucketName: policy-site-sls
-      localDir: static
+  s3Sync:
+  - bucketName: policy-site-sls
+    localDir: static
 
 # you can overwrite defaults here
 functions:
