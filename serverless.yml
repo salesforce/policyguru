@@ -17,7 +17,7 @@ frameworkVersion: '2'
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.6
   stage: stage
   region: us-east-2
 
@@ -32,10 +32,6 @@ custom:
         - python3.6
         - python3.7
         - python3.8
-  siteName: policy-site-sls
-  s3Sync:
-  - bucketName: policy-site-sls
-    localDir: static
 
 # you can overwrite defaults here
 functions:
@@ -93,38 +89,5 @@ functions:
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
 
-resources:
-  Resources:
-    StaticSite:
-      Type: AWS::S3::Bucket
-      Properties:
-        AccessControl: PublicRead
-        BucketName: ${self:custom.siteName}
-        WebsiteConfiguration:
-          IndexDocument: index.html
-    StaticSiteS3BucketPolicy:
-      Type: AWS::S3::BucketPolicy
-      Properties:
-        Bucket:
-          Ref: StaticSite
-        PolicyDocument:
-          Statement:
-            - Sid: PublicReadGetObject
-              Effect: Allow
-              Principal: "*"
-              Action:
-                - s3:GetObject
-              Resource:
-                Fn::Join: [
-                  "", [
-                  "arn:aws:s3:::",
-                  {
-                    "Ref": "StaticSite"
-                  },
-                  "/*"
-                ]
-                ]
-
 plugins:
   - serverless-python-requirements
-  - serverless-s3-sync
