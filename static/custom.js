@@ -48,11 +48,17 @@ function call_api() {
     var data = $( "form" ).serialize();
     $.ajax({
         type: "POST",
-        url: '/call_policy',
+        url: 'https://vt7pn51wh8.execute-api.us-east-2.amazonaws.com/stage/call_policy',
         data: data,
         success: function(response){
             document.getElementById('final_json').value = JSON.stringify(response, null, 4);
             console.log(JSON.stringify(response));
         }
     });
+}
+function copy_text(){
+    var copyText = document.getElementById("final_json");
+    copyText.select();
+    copyText.setSelectionRange(0, copyText.value.length + 1);
+    document.execCommand("copy");
 }

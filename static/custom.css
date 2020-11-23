@@ -46,3 +46,21 @@ hr {
     border: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
+textarea{
+    /*font-family: "Arial, 'Helvetica Neue', Helvetica, sans-serif";*/
+    white-space:pre;
+}
+
+.myspanclass {
+    display: block;
+    unicode-bidi: embed;
+    font-family: monospace;
+    white-space: pre;
+    border: solid 1px orange;
+    padding: 16px;
+    margin: 16px;
+}
+.key{color:green}
+.string{color:navy}
+.number{color:blue}
+.boolean,.null{font-weight:bold;color:purple}

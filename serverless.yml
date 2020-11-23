@@ -30,8 +30,6 @@ custom:
       description: Layer for Policy Sentry API
       compatibleRuntimes:
         - python3.6
-        - python3.7
-        - python3.8
 
 # you can overwrite defaults here
 functions:
@@ -86,6 +84,7 @@ functions:
       - http:
           path: call_policy
           method: post
+          cors: true
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
 

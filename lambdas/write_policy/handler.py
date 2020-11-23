@@ -1,6 +1,6 @@
 import json
 import logging
-
+from urllib.parse import parse_qs, unquote
 try:
     import unzip_requirements
 except ImportError:
@@ -80,6 +80,10 @@ def write_policy(event, context):
 
 
 def ui_response_handler(event, context):
+    event = event['body']
+    print("performing decode, event value is",event)
+    event = parse_qs(event)
+    print(event)
     output_data = {'mode': 'crud', 'name': '', 'read': [],
                    'write': [],
                    'list': [],
@@ -88,19 +92,32 @@ def ui_response_handler(event, context):
                    'wildcard-only': {'single-actions': [], 'service-read': [], 'service-write': [],
                                      'service-list': [], 'service-tagging': [],
                                      'service-permissions-management': []}}
-    for key,val in event.items():
+    for key, val in event.items():
         indx = key.split('_')[-1]
         if 'arn' in key:
             if key.startswith('action'):
-                action_name = event['action_name_'+indx]
+                action_name = event['action_name_'+indx][0]
                 update_data = output_data
             else:
-                action_name = event['wc_name_'+indx]
+                action_name = event['wc_name_'+indx][0]
                 update_data = output_data['wildcard-only']
-            val = list(map(lambda x:x.strip(), val.split(',')))
+            val = list(map(lambda x:x.strip(), unquote(val[0]).split(',')))
             update_data[action_name].extend(val)
-    return write_policy_with_template(output_data)
 
+    print("output data", output_data)
+
+    return {
+        "statusCode": 200,
+        'headers': {
+            'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials' : True,
+            'Access-Control-Allow-Methods': 'POST,GET',
+            'Content-Type': 'application/json'
+        },
+        "body": json.dumps(write_policy_with_template(output_data))
+    }
+    
 if __name__ == "__main__":
     payload = {
         "mode": "crud",
