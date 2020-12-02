@@ -16,6 +16,7 @@ ns.add_collection(unit)
 integration = Collection('integration')
 ns.add_collection(integration)
 
+
 @task
 def security_scan(c):
     """Runs `bandit` and `safety check`"""
@@ -87,6 +88,7 @@ def run_pytest(c):
         logger.critical(f"FAIL: Failure: {f_e}")
         sys.exit(1)
 
+
 # INTEGRATION TESTS - make sure sls invoke works locally
 @task
 def run_serverless_invoke(c):
@@ -106,6 +108,27 @@ def run_serverless_invoke(c):
         sys.exit(1)
 
 
+# INTEGRATION TESTS - Run the lambdas directly to make sure that the __main__ works properly
+@task
+def run_lambdas_directly(c):
+    """Integration testing: Running the Lambdas directly to validate that the __main__ works properly with
+    its dummy values"""
+    c.run('echo "Integration testing: Running the Lambdas directly to validate that the __main__ works properly with '
+          'its dummy values"')
+    try:
+        c.run('python3 lambdas/cloudsplaining_scan_policy/handler.py')
+        c.run('python3 lambdas/write_policy/handler.py')
+        c.run('python3 lambdas/query_actions/handler.py')
+        c.run('python3 lambdas/query_resources/handler.py')
+        c.run('python3 lambdas/query_conditions/handler.py')
+    except UnexpectedExit as u_e:
+        logger.critical(f"FAIL! UnexpectedExit: {u_e}")
+        sys.exit(1)
+    except Failure as f_e:
+        logger.critical(f"FAIL: Failure: {f_e}")
+        sys.exit(1)
+
+
 unit.add_task(run_nosetests, 'nose')
 unit.add_task(run_pytest, 'pytest')
 
@@ -114,3 +137,4 @@ test.add_task(run_linter, 'lint')
 test.add_task(security_scan, 'security')
 
 integration.add_task(run_serverless_invoke, 'serverless-invoke')
+integration.add_task(run_lambdas_directly, 'run-lambdas-directly')

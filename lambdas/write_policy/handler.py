@@ -117,17 +117,17 @@ def ui_response_handler(event, context):
         },
         "body": json.dumps(write_policy_with_template(output_data))
     }
-    
+
+
 if __name__ == "__main__":
     payload = {
         "mode": "crud",
         "read": [
-            "arn:aws:s3:::example-org-s3-access-logs",
             "arn:aws:s3:::mybucket"
         ]
     }
-    # this_event = {"body": json.dumps(payload)}
-    this_event = {"body": payload}
+    this_event = {"body": json.dumps(payload)}
+    # this_event = {"body": payload}
     this_response = write_policy(this_event, "test")
     print("This is a demo")
     print(this_response)

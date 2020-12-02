@@ -66,8 +66,8 @@ if __name__ == "__main__":
         ],
         "exclude_actions": []
     }
-    # this_event = {"body": json.dumps(payload)}
-    this_event = {"body": payload}
+    this_event = {"body": json.dumps(payload)}
+    # this_event = {"body": payload}
 
     response = cloudsplaining_scan_policy(this_event, "test")
     print("this is a demo")
