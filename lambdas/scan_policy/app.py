@@ -10,7 +10,7 @@ except ImportError:
 logger = logging.getLogger()
 
 
-def cloudsplaining_scan_policy(event, context):
+def lambda_handler(event, context):
     request_data = json.loads(event.get("body"))
     policy_document = request_data.get('policy_document')
     include_actions = request_data.get('include_actions')
@@ -69,6 +69,6 @@ if __name__ == "__main__":
     this_event = {"body": json.dumps(payload)}
     # this_event = {"body": payload}
 
-    response = cloudsplaining_scan_policy(this_event, "test")
+    response = lambda_handler(this_event, "test")
     print("this is a demo")
     print(response)

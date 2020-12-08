@@ -1,7 +1,7 @@
 import unittest
 import os
 import json
-from lambdas.query_resources.handler import query_resources
+from lambdas.query_resources.app import lambda_handler
 from lambdas.local_app import app
 
 mock_events_folder = os.path.join(
@@ -23,7 +23,7 @@ class TestQueryResources(unittest.TestCase):
                 "list_arn_types": True,
             }
         }
-        response = query_resources(this_event, "test")
+        response = lambda_handler(this_event, "test")
         self.assertTrue(response.get("statusCode") == 200)
         result = json.loads(response.get("body"))
         for arn_type in ["accesspoint", "bucket", "object", "job"]:
@@ -44,7 +44,7 @@ class TestQueryResources(unittest.TestCase):
         with open(mock_filepath) as json_file:
             mock_event = json.load(json_file)
 
-        response = query_resources(mock_event, "test")
+        response = lambda_handler(mock_event, "test")
         self.assertTrue(response.get("statusCode") == 200)
         result = json.loads(response.get("body"))
         for arn_type in ["accesspoint", "bucket", "object", "job"]:
