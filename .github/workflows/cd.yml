@@ -1,11 +1,16 @@
-# .github/workflows/test.yml
+name: continuous-deployment
 
-name: continuous-integration
+on:
+  push:
+    branches:
+      - master
+      - main
 
-on: [push, pull_request]
+#  release:
+#    types: [published]
 
 jobs:
-  ci:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,15 +26,6 @@ jobs:
           pip install -r requirements-dev.txt
           pip install aws-sam-cli
 
-#     - run: invoke test.format
-#     - run: invoke test.lint
-
-      - name: Run unit tests
-        run: invoke unit.pytest
-
-      - name: Run security test
-        run: invoke test.security
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -40,5 +36,17 @@ jobs:
       - name: Validate SAM Template
         run: invoke integration.sam-validate
 
-      - name: Invoke individual lambda functions
-        run: invoke integration.sam-invoke
+      - name: Deploy serverless functions and website to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "us-east-1"
+          STACK_NAME: ${{ secrets.STACK_NAME }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_PREFIX: ${{ secrets.S3_PREFIX }}
+          CAPABILITIES: "CAPABILITY_IAM"
+          DOMAIN_NAME: "sfdcspace.com"
+          SUBDOMAIN: "cloudsplaining"
+        run: |
+          ./deploy.sh
+

@@ -4,11 +4,11 @@ import json
 import logging
 from flask import Flask, request, jsonify, render_template
 from flask_swagger import swagger
-from lambdas.cloudsplaining_scan_policy.handler import cloudsplaining_scan_policy
-from lambdas.write_policy.handler import write_policy
-from lambdas.query_actions.handler import query_actions
-from lambdas.query_resources.handler import query_resources
-from lambdas.query_conditions.handler import query_conditions
+from lambdas.scan_policy.app import lambda_handler as cloudsplaining_scan_policy
+from lambdas.write_policy.app import lambda_handler as write_policy
+from lambdas.query_actions.app import lambda_handler as query_actions
+from lambdas.query_resources.app import lambda_handler as query_resources
+from lambdas.query_conditions.app import lambda_handler as query_conditions
 
 app = Flask(__name__)
 logger = logging.getLogger()

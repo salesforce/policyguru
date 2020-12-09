@@ -1,7 +1,7 @@
 import unittest
 import json
 import os
-from lambdas.query_actions.handler import query_actions
+from lambdas.query_actions.app import lambda_handler
 from lambdas.local_app import app
 
 mock_events_folder = os.path.join(
@@ -23,7 +23,7 @@ class TestQueryActions(unittest.TestCase):
                 "name": "GetObject",
             }
         }
-        response = query_actions(this_event, "test")
+        response = lambda_handler(this_event, "test")
         self.assertTrue(response.get("statusCode") == 200)
         result = json.loads(response.get("body"))
         self.assertTrue(len(result['s3']) == 2)
@@ -38,7 +38,7 @@ class TestQueryActions(unittest.TestCase):
         with open(mock_filepath) as json_file:
             mock_event = json.load(json_file)
 
-        response = query_actions(mock_event, "test")
+        response = lambda_handler(mock_event, "test")
         print(response)
         result = json.loads(response.get("body"))
         self.assertTrue(len(result['s3']) == 2)

@@ -1,0 +1,174 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  cloudsplaining.io
+
+  Sample SAM Template for cloudsplaining.io
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Parameters:
+  HostedZoneId:
+    Type: String
+    Description: The Hosted Zone ID
+  DomainName:
+    Type: String
+    Description: The domain name
+  Subdomain:
+    Type: String
+    Description: The subdomain to include, without the domain name
+  Region:
+    Type: String
+    Description: The AWS region
+    Default: "us-east-1"
+
+# Resource details: https://github.com/aws/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+Resources:
+  # Policy Sentry's Write Policy functions
+  WritePolicyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/write_policy/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Events:
+        WritePolicy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CloudsplainingHttpApi
+            Path: /write
+            Method: post
+
+  # Cloudsplaining Scan policy
+  ScanPolicyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/scan_policy/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Events:
+        ScanPolicy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CloudsplainingHttpApi
+            Path: /scan
+            Method: post
+
+  # Policy Sentry's query functions
+
+  QueryActionsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/query_actions/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Events:
+        ScanPolicy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CloudsplainingHttpApi
+            Path: /query/actions
+            Method: get
+
+  QueryResourcesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/query_resources/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Events:
+        ScanPolicy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CloudsplainingHttpApi
+            Path: /query/resources
+            Method: get
+
+  QueryConditionsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/query_conditions/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Events:
+        ScanPolicy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CloudsplainingHttpApi
+            Path: /query/conditions
+            Method: get
+
+  # Certificate Manager
+  ApiCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub "${Subdomain}.${DomainName}"
+      DomainValidationOptions:
+        - DomainName: !Sub "${Subdomain}.${DomainName}"
+          HostedZoneId: !Sub "${HostedZoneId}"
+      ValidationMethod: DNS
+
+  # TODO: CloudFront distribution, like this: https://izifortune.com/serverless-website-sam-aws/
+  # TODO: Route53 records
+  # S3 bucket for UI files
+  StaticSite:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      BucketName: !Sub "${Subdomain}.${DomainName}"
+      WebsiteConfiguration:
+        IndexDocument: index.html
+
+  StaticSiteS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: StaticSite
+      PolicyDocument:
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: "*"
+            Action:
+              - s3:GetObject
+            Resource:
+              Fn::Join: [
+                "", [
+                "arn:aws:s3:::",
+                {
+                  "Ref": "StaticSite"
+                },
+                "/*"
+              ]
+              ]
+
+  # API Gateway V2 type
+  CloudsplainingHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      DisableExecuteApiEndpoint: true
+      Domain:
+        DomainName: !Sub "${Subdomain}.${DomainName}"
+        CertificateArn: !Ref ApiCertificate
+        Route53:
+          HostedZoneId: !Sub "${HostedZoneId}"
+      CorsConfiguration:
+        AllowOrigins: "*"
+        AllowHeaders:
+          - x-apigateway-header
+        AllowMethods:
+          - GET
+          - POST
+        MaxAge: 600
+
+Outputs:
+  ScanPolicyFunction:
+    Description: "Scan Policy Lambda Function ARN"
+    Value: !GetAtt ScanPolicyFunction.Arn
+
+  WritePolicyFunction:
+    Description: "Write Policy Lambda Function ARN"
+    Value: !GetAtt WritePolicyFunction.Arn

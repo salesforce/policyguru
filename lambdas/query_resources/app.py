@@ -10,7 +10,7 @@ except ImportError:
 logger = logging.getLogger()
 
 
-def query_resources(event, context):
+def lambda_handler(event, context):
     # TODO: Validate request data
     service = (event["queryStringParameters"]).get('service')
     name = event["queryStringParameters"].get('name', None)
@@ -33,6 +33,6 @@ if __name__ == "__main__":
         }
     }
 
-    response = query_resources(this_event, "test")
+    response = lambda_handler(this_event, "test")
     print("This is a demo")
     print(response)

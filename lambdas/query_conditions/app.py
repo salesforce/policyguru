@@ -1,6 +1,7 @@
 import json
 import logging
 from policy_sentry.command.query import query_condition_table
+
 try:
     import unzip_requirements
 except ImportError:
@@ -9,8 +10,7 @@ except ImportError:
 logger = logging.getLogger()
 
 
-def query_conditions(event, context):
-    # TODO: Validate request data
+def lambda_handler(event, context):
     service = (event["queryStringParameters"]).get('service')
     name = event["queryStringParameters"].get('name', None)
 
@@ -30,6 +30,6 @@ if __name__ == "__main__":
         }
     }
 
-    response = query_conditions(this_event, "test")
+    response = lambda_handler(this_event, "test")
     print("This is a demo")
     print(response)

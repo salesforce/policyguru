@@ -1,11 +1,11 @@
 import json
 import logging
 from urllib.parse import parse_qs, unquote
+from policy_sentry.command.write_policy import write_policy_with_template
 try:
     import unzip_requirements
 except ImportError:
     pass
-from policy_sentry.command.write_policy import write_policy_with_template
 
 logger = logging.getLogger()
 
@@ -68,7 +68,7 @@ def write_crud_policy(event, context):
     return output
 
 
-def write_policy(event, context):
+def lambda_handler(event, context):
     # TODO: Validate request data
     body = write_crud_policy(event, context)
 
@@ -128,6 +128,6 @@ if __name__ == "__main__":
     }
     this_event = {"body": json.dumps(payload)}
     # this_event = {"body": payload}
-    this_response = write_policy(this_event, "test")
+    this_response = lambda_handler(this_event, "test")
     print("This is a demo")
     print(this_response)

@@ -1,7 +1,7 @@
 import unittest
 import os
 import json
-from lambdas.write_policy.handler import write_policy
+from lambdas.write_policy.app import lambda_handler
 from lambdas.local_app import app
 
 mock_events_folder = os.path.join(
@@ -26,7 +26,7 @@ class TestWritePolicy(unittest.TestCase):
             })
         }
         # this_event = {"body": json.dumps(payload)}
-        response = write_policy(this_event, "test")
+        response = lambda_handler(this_event, "test")
         # policy = json.loads(response.get("body"))
         policy = json.loads(response.get("body"))
         self.assertTrue(response.get("statusCode") == 200)
@@ -40,7 +40,7 @@ class TestWritePolicy(unittest.TestCase):
         with open(mock_file) as f:
             mock_data = json.load(f)
 
-        response = write_policy(mock_data, "test")
+        response = lambda_handler(mock_data, "test")
         # policy = json.loads(response.get("body"))
         policy = json.loads(response.get("body"))
         self.assertTrue(response.get("statusCode") == 200)

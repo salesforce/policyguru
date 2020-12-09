@@ -1,7 +1,7 @@
 import unittest
 import json
 import os
-from lambdas.query_conditions.handler import query_conditions
+from lambdas.query_conditions.app import lambda_handler
 from lambdas.local_app import app
 
 mock_events_folder = os.path.join(
@@ -24,7 +24,7 @@ class TestQueryConditions(unittest.TestCase):
             }
 
         }
-        response = query_conditions(this_event, "test")
+        response = lambda_handler(this_event, "test")
         self.assertTrue(response.get("statusCode") == 200)
         result = json.loads(response.get("body"))
         print(json.dumps(result, indent=4))
@@ -57,7 +57,7 @@ class TestQueryConditions(unittest.TestCase):
         with open(mock_filepath) as json_file:
             mock_event = json.load(json_file)
 
-        response = query_conditions(mock_event, "test")
+        response = lambda_handler(mock_event, "test")
         self.assertTrue(response.get("statusCode") == 200)
         result = json.loads(response.get("body"))
         print(json.dumps(result, indent=4))
