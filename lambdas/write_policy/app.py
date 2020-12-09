@@ -1,11 +1,11 @@
 import json
 import logging
 from urllib.parse import parse_qs, unquote
+from policy_sentry.command.write_policy import write_policy_with_template
 try:
     import unzip_requirements
 except ImportError:
     pass
-from policy_sentry.command.write_policy import write_policy_with_template
 
 logger = logging.getLogger()
 

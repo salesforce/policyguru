@@ -89,17 +89,18 @@ def run_pytest(c):
         sys.exit(1)
 
 
-# INTEGRATION TESTS - make sure sls invoke works locally
+# INTEGRATION TESTS - make sure sam invoke works locally
 @task
-def run_serverless_invoke(c):
-    """Integration testing: validate sls invoke"""
-    c.run('echo "Running Serverless Integration tests"')
+def run_sam_invoke(c):
+    """Integration testing: validate sam invoke"""
+    c.run('echo "Running SAM Integration tests"')
     try:
-        c.run('sls invoke local -f scan_policy --path events/scan-policy-mock.json')
-        c.run('sls invoke local -f write_policy --path events/write-policy-mock.json')
-        c.run('sls invoke local -f query_actions --path events/query-actions-mock.json')
-        c.run('sls invoke local -f query_resources --path events/query-resources-mock.json')
-        c.run('sls invoke local -f query_conditions --path events/query-conditions-mock.json')
+        c.run('sam build --use-container')
+        c.run('sam local invoke WritePolicyFunction --event events/write-policy-mock.json')
+        c.run('sam local invoke ScanPolicyFunction --event events/scan-policy-mock.json')
+        c.run('sam local invoke QueryActionsFunction --event events/query-actions-mock.json')
+        c.run('sam local invoke QueryResourcesFunction --event events/query-resources-mock.json')
+        c.run('sam local invoke QueryConditionsFunction --event events/query-conditions-mock.json')
     except UnexpectedExit as u_e:
         logger.critical(f"FAIL! UnexpectedExit: {u_e}")
         sys.exit(1)
@@ -116,11 +117,11 @@ def run_lambdas_directly(c):
     c.run('echo "Integration testing: Running the Lambdas directly to validate that the __main__ works properly with '
           'its dummy values"')
     try:
-        c.run('python3 lambdas/cloudsplaining_scan_policy/handler.py')
-        c.run('python3 lambdas/write_policy/handler.py')
-        c.run('python3 lambdas/query_actions/handler.py')
-        c.run('python3 lambdas/query_resources/handler.py')
-        c.run('python3 lambdas/query_conditions/handler.py')
+        c.run('python3 lambdas/scan_policy/app.py')
+        c.run('python3 lambdas/write_policy/app.py')
+        c.run('python3 lambdas/query_actions/app.py')
+        c.run('python3 lambdas/query_resources/app.py')
+        c.run('python3 lambdas/query_conditions/app.py')
     except UnexpectedExit as u_e:
         logger.critical(f"FAIL! UnexpectedExit: {u_e}")
         sys.exit(1)
@@ -136,5 +137,5 @@ test.add_task(format, 'format')
 test.add_task(run_linter, 'lint')
 test.add_task(security_scan, 'security')
 
-integration.add_task(run_serverless_invoke, 'serverless-invoke')
+integration.add_task(run_sam_invoke, 'sam-invoke')
 integration.add_task(run_lambdas_directly, 'run-lambdas-directly')

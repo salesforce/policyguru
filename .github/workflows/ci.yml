@@ -34,4 +34,4 @@ jobs:
       - run: invoke unit.pytest
 #     - run: invoke test.lint
       - run: invoke test.security
-      - run: invoke integration.serverless-invoke
+      - run: invoke integration.sam-invoke
