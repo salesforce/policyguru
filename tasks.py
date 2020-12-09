@@ -80,7 +80,7 @@ def run_pytest(c):
     c.run('echo "Running Unit tests"')
     try:
         c.run('python -m coverage run -m pytest -v')
-        c.run('python -m coverage report -m')
+        # c.run('python -m coverage report -m')
     except UnexpectedExit as u_e:
         logger.critical(f"FAIL! UnexpectedExit: {u_e}")
         sys.exit(1)
