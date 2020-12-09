@@ -79,6 +79,19 @@ def run_pytest(c):
     """Unit testing: Runs unit tests using `pytest`"""
     c.run('echo "Running Unit tests"')
     try:
+        c.run('sam validate')
+    except UnexpectedExit as u_e:
+        logger.critical(f"FAIL! UnexpectedExit: {u_e}")
+        sys.exit(1)
+    except Failure as f_e:
+        logger.critical(f"FAIL: Failure: {f_e}")
+        sys.exit(1)
+
+@task
+def run_sam_validate(c):
+    """Validate SAM template"""
+    c.run('echo "Validating SAML template"')
+    try:
         c.run('python -m coverage run -m pytest -v')
         c.run('python -m coverage report -m')
     except UnexpectedExit as u_e:
@@ -138,4 +151,5 @@ test.add_task(run_linter, 'lint')
 test.add_task(security_scan, 'security')
 
 integration.add_task(run_sam_invoke, 'sam-invoke')
+integration.add_task(run_sam_validate, 'sam-validate')
 integration.add_task(run_lambdas_directly, 'run-lambdas-directly')
