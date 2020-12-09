@@ -2,6 +2,7 @@
 tmp
 !.gitkeep
 unzip_requirements.py
+.aws-sam
 
 # IDEs
 .idea
