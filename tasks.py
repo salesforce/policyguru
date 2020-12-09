@@ -79,7 +79,8 @@ def run_pytest(c):
     """Unit testing: Runs unit tests using `pytest`"""
     c.run('echo "Running Unit tests"')
     try:
-        c.run('sam validate')
+        c.run('python -m coverage run -m pytest -v')
+        c.run('python -m coverage report -m')
     except UnexpectedExit as u_e:
         logger.critical(f"FAIL! UnexpectedExit: {u_e}")
         sys.exit(1)
@@ -90,10 +91,9 @@ def run_pytest(c):
 @task
 def run_sam_validate(c):
     """Validate SAM template"""
-    c.run('echo "Validating SAML template"')
+    c.run('echo "Validating SAM template"')
     try:
-        c.run('python -m coverage run -m pytest -v')
-        c.run('python -m coverage report -m')
+        c.run('sam validate')
     except UnexpectedExit as u_e:
         logger.critical(f"FAIL! UnexpectedExit: {u_e}")
         sys.exit(1)
