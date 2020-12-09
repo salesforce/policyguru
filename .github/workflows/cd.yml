@@ -1,0 +1,53 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - refactor/sam-cli
+
+#  release:
+#    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+          pip install aws-sam-cli
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Validate SAM Template
+        run: invoke integration.sam-validate
+
+      - name: Deploy serverless functions and website to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "us-east-1"
+          STACK_NAME: ${{ secrets.STACK_NAME }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_PREFIX: ${{ secrets.S3_PREFIX }}
+          CAPABILITIES: "CAPABILITY_IAM"
+          DOMAIN_NAME: "sfdcspace.com"
+          SUBDOMAIN: "cloudsplaining"
+        run: |
+          ./deploy.sh
+
