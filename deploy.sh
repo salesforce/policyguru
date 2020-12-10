@@ -30,7 +30,8 @@ sam deploy \
   --s3-bucket ${S3_BUCKET} \
   --s3-prefix ${S3_PREFIX} \
   --capabilities ${CAPABILITIES} \
-  --region ${AWS_REGION}
+  --region ${AWS_REGION} \
+  --no-fail-on-empty-changeset
 
 echo "Copying the UI files to the S3 bucket"
 aws s3 sync ./static/ s3://${SUBDOMAIN}.${DOMAIN_NAME} --delete
