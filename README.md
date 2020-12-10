@@ -128,6 +128,10 @@ pip3 install -r requirements-dev.txt
 * Then run the Flask API locally
 
 ```bash
+# Option 1: Use the PyInvoke wrapper
+invoke develop.flask
+
+# Option 2: Run the flask app directly
 python3 local_run.py
 ```
 
