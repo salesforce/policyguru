@@ -123,8 +123,6 @@ Resources:
         CertificateArn: !Ref ApiCertificate
         Route53:
           HostedZoneId: !Sub "${HostedZoneId}"
-          # TODO: Change to HostedZoneName
-          # HostedZoneName: !Sub "${DomainName}"
       CorsConfiguration:
         AllowOrigins: "*"
         AllowHeaders:
@@ -163,48 +161,10 @@ Resources:
       Type: A
       # For CloudFront, HostedZoneId is always Z2FDTNDATAQYW2, see:
       # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html#cfn-route53-aliastarget-hostedzoneid
-      # HostedZoneId: Z2FDTNDATAQYW2
-      # The below Hosted Zone ID is for S3 buckets in us-east-1
       AliasTarget:
         # CloudFront configuration
         HostedZoneId: Z2FDTNDATAQYW2
         DNSName: !GetAtt CloudfrontDistribution.DomainName
-
-        # S3 bucket configuration
-        # HostedZoneId: Z3AQBSTGFYJSTF
-        # DNSName: !Sub "${DomainName}.s3-website-us-east-1.amazonaws.com"
-
-
-#  StaticSite:
-#    Type: AWS::S3::Bucket
-#    Properties:
-#      AccessControl: PublicRead
-#      BucketName: !Sub "${DomainName}"
-#      WebsiteConfiguration:
-#        IndexDocument: index.html
-#  StaticSiteS3BucketPolicy:
-#    Type: AWS::S3::BucketPolicy
-#    Properties:
-#      Bucket:
-#        Ref: StaticSite
-#      PolicyDocument:
-#        Statement:
-#          - Sid: PublicReadGetObject
-#            Effect: Allow
-#            Principal: "*"
-#            Action:
-#              - s3:GetObject
-#            Resource:
-#              Fn::Join: [
-#                  "", [
-#                    "arn:aws:s3:::",
-#                  {
-#                    "Ref": "StaticSite"
-#                  },
-#                    "/*"
-#                ]
-#              ]
-
 
 # Static site for CloudFront
   StaticSite:
@@ -227,9 +187,6 @@ Resources:
                 - !Sub "arn:aws:s3:::${StaticSite}/*"
               Principal:
                 AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}"
-
-  # TODO: CloudFront distribution, like this: https://izifortune.com/serverless-website-sam-aws/
-  # TODO: Route53 records
 
   CloudFrontOriginAccessIdentity:
     Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
