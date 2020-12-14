@@ -135,6 +135,14 @@ invoke develop.flask
 python3 local_run.py
 ```
 
+## Creating a new instance of this entirely
+
+```bash
+sam init \
+    --base-image amazon/python3.8-base \
+    -d pip
+    -o 
+```
 
 # Resources
 

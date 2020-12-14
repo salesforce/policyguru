@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "policyguru"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-wy34zozo3b7r"
+s3_prefix = "policyguru"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "HostedZoneId=\"Z02095192ABCZ8G0WEYSW\" DomainName=\"policyguru.io\" Region=\"us-east-1\""

@@ -1,8 +1,10 @@
 # Working directories
 tmp
+.notes
 !.gitkeep
 unzip_requirements.py
 .aws-sam
+deploy_settings.sh
 
 # IDEs
 .idea

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 export S3_BUCKET="aws-sam-cli-managed-default-samclisourcebucket-wy34zozo3b7r"
-export S3_PREFIX="cloudsplainingio"
-export STACK_NAME="cloudsplainingio"
+export S3_PREFIX="policyguru"
+export STACK_NAME="policyguru"
 export CAPABILITIES="CAPABILITY_IAM"
 export AWS_REGION="us-east-1"
-export SUBDOMAIN="cloudsplaining"
-export DOMAIN_NAME="sfdcspace.com"
+#export DOMAIN_NAME="policyguru.io"
+export DOMAIN_NAME="forcetronics.net"
