@@ -154,24 +154,24 @@ Resources:
       ValidationMethod: DNS
 
 
-#  WebsiteDNSName:
-#    Type: AWS::Route53::RecordSet
-#    DependsOn: StaticSite
-#    Properties:
-#      # HostedZoneId: !Sub "${HostedZoneId}"
-#      HostedZoneName: !Sub "${DomainName}"
-#      Name: !Sub "${DomainName}"
-#      Type: A
-#      # TODO: Use HostedZoneName instead.
-#      # For CloudFront, HostedZoneId is always Z2FDTNDATAQYW2, see:
-#      # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html#cfn-route53-aliastarget-hostedzoneid
-#      # HostedZoneId: Z2FDTNDATAQYW2
-#      # The below Hosted Zone ID is for S3 buckets in us-east-1
-#      AliasTarget:
-#        HostedZoneId: Z3AQBSTGFYJSTF
-#        DNSName: !Ref "${DomainName}.s3-website.us-east-1.amazonaws.com"
-##        DNSName: !GetAtt StaticSite.DomainName
-##        DNSName: !GetAtt CloudfrontDistribution.DomainName
+  WebsiteDNSName:
+    Type: AWS::Route53::RecordSet
+    DependsOn: StaticSite
+    Properties:
+      # HostedZoneId: !Sub "${HostedZoneId}"
+      HostedZoneName: !Sub "${DomainName}."
+      Name: !Sub "${DomainName}"
+      Type: A
+      # TODO: Use HostedZoneName instead.
+      # For CloudFront, HostedZoneId is always Z2FDTNDATAQYW2, see:
+      # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html#cfn-route53-aliastarget-hostedzoneid
+      # HostedZoneId: Z2FDTNDATAQYW2
+      # The below Hosted Zone ID is for S3 buckets in us-east-1
+      AliasTarget:
+        HostedZoneId: Z3AQBSTGFYJSTF
+        DNSName: !Sub "${DomainName}.s3-website-us-east-1.amazonaws.com"
+#        DNSName: !GetAtt StaticSite.DomainName
+#        DNSName: !GetAtt CloudfrontDistribution.DomainName
 
 #  ApiDNSName:
 #    Type: AWS::Route53::RecordSet

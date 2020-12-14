@@ -57,6 +57,20 @@ This will create the following resources that are defined in the [./template.yam
 
 It will also upload the static website artifacts to the S3 bucket mentioned above.
 
+### Validating the API
+
+* If we deployed the API to https://api.example.com, you can do a test query with the following:
+
+```
+curl "https://api.example.net/query/actions?service=s3&name=getobject"
+```
+
+That will return:
+
+```json
+{"s3": [{"action": "s3:GetObject", "description": "Grants permission to retrieve objects from Amazon S3", "access_level": "Read", "resource_arn_format": "arn:${Partition}:s3:::${BucketName}/${ObjectName}", "condition_keys": [], "dependent_actions": []}, {"action": "s3:GetObject", "description": "Grants permission to retrieve objects from Amazon S3", "access_level": "Read", "resource_arn_format": "*", "condition_keys": [], "dependent_actions": []}]}
+```
+
 ## Testing and Development
 
 * Create virtual environment and activate it
