@@ -158,11 +158,9 @@ Resources:
     Type: AWS::Route53::RecordSet
     DependsOn: StaticSite
     Properties:
-      # HostedZoneId: !Sub "${HostedZoneId}"
       HostedZoneName: !Sub "${DomainName}."
       Name: !Sub "${DomainName}"
       Type: A
-      # TODO: Use HostedZoneName instead.
       # For CloudFront, HostedZoneId is always Z2FDTNDATAQYW2, see:
       # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html#cfn-route53-aliastarget-hostedzoneid
       # HostedZoneId: Z2FDTNDATAQYW2
@@ -170,22 +168,6 @@ Resources:
       AliasTarget:
         HostedZoneId: Z3AQBSTGFYJSTF
         DNSName: !Sub "${DomainName}.s3-website-us-east-1.amazonaws.com"
-#        DNSName: !GetAtt StaticSite.DomainName
-#        DNSName: !GetAtt CloudfrontDistribution.DomainName
-
-#  ApiDNSName:
-#    Type: AWS::Route53::RecordSet
-#    Properties:
-#      # For CloudFront, HostedZoneId is always Z2FDTNDATAQYW2, see:
-#      # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html#cfn-route53-aliastarget-hostedzoneid
-#      # For API Gateway, you can use regionalHostedZoneId or distributionHostedZoneId.
-#      HostedZoneId: Ref HttpApi.regionalHostedZoneId
-#      HostedZoneId: Ref HttpApi.regionalHostedZoneId
-#      Name: !Sub "${DomainName}"
-#      Type: A
-#      AliasTarget:
-#        HostedZoneId: !Sub "${HostedZoneId}"
-#        DNSName: "api.${DomainName}"
 
 
   StaticSite:
