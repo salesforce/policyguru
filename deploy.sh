@@ -39,6 +39,6 @@ echo "Copying the UI files to the S3 bucket"
 aws s3 sync ./static/ s3://${DOMAIN_NAME} --delete
 
 # Uncomment this when we have the Route53 stuff worked out.
-echo "View the website here: http://${DOMAIN_NAME}.s3-website.${AWS_REGION}.amazonaws.com/"
+#echo "View the website here: http://${DOMAIN_NAME}.s3-website.${AWS_REGION}.amazonaws.com/"
 
-#echo "View the updates at: https://${domain_name}"
+echo "View the updates at: https://${domain_name}"
