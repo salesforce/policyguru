@@ -7,6 +7,26 @@ Here, we will store code for the following:
   * Uses [AWS Serverless Application Model (SAM)](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
 * User interface POC for Policy Sentry
 
+<!--ts-->
+   * [policy-sentry-ui](#policy-sentry-ui)
+      * [Prerequisites](#prerequisites)
+   * [Instructions](#instructions)
+      * [Deployment](#deployment)
+         * [Validating the API](#validating-the-api)
+      * [Testing and Development](#testing-and-development)
+      * [Running locally](#running-locally)
+         * [Invoking Lambdas locally](#invoking-lambdas-locally)
+            * [Option 1: Leverage PyInvoke command](#option-1-leverage-pyinvoke-command)
+            * [Option 2: Run individual commands](#option-2-run-individual-commands)
+      * [Local Flask API](#local-flask-api)
+      * [Creating a new instance of this entirely](#creating-a-new-instance-of-this-entirely)
+   * [Resources](#resources)
+
+<!-- Added by: kmcquade, at: Mon Dec 14 12:19:18 EST 2020 -->
+
+<!--te-->
+
+
 ## Prerequisites
 
 * AWS CLI
