@@ -19,7 +19,6 @@ Here, we will store code for the following:
             * [Option 1: Leverage PyInvoke command](#option-1-leverage-pyinvoke-command)
             * [Option 2: Run individual commands](#option-2-run-individual-commands)
       * [Local Flask API](#local-flask-api)
-      * [Creating a new instance of this entirely](#creating-a-new-instance-of-this-entirely)
    * [Resources](#resources)
 
 <!-- Added by: kmcquade, at: Mon Dec 14 12:19:18 EST 2020 -->
@@ -28,6 +27,8 @@ Here, we will store code for the following:
 
 
 ## Prerequisites
+
+### Requirement 1: Things to install
 
 * AWS CLI
 
@@ -41,23 +42,77 @@ brew install awscli
 brew tap aws/tap
 brew install aws-sam-cli
 ```
-* Docker: should be installed and running locally
+* Docker: should be installed and running locally. See installation instructions [here](https://docs.docker.com/get-docker/)
 * Authenticate to your AWS account via CLI
-* There should be a Route53 Public Hosted Zone in the account.
+
+### Requirement 2: Purchase a domain name via Route53
+
+You will need to purchase a domain name via Route53. You can follow the documentation here: https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html.
+
+### Requirement 3: Create a Route53 Public Hosted Zone
+
+You will need to create a Route53 Public Hosted Zone that matches the domain name that you purchased in the previous step.
+
+* After you register the domain name, you can create the hosted zone via the AWS Console or via the command line using the [create-hosted-zone](https://docs.aws.amazon.com/cli/latest/reference/route53/create-hosted-zone.html) command:
+
+```bash
+export DOMAIN_NAME="example.com"
+aws route53 create-hosted-zone --name $DOMAIN_NAME 
+```
+
+### Requirement 4: Create an S3 bucket to hold the SAM CLI artifacts
+
+The Severless Application Model (SAM) packages applications by creating a `.zip` file of your code and dependencies and uploading the file to an S3 bucket so it can be consumed by CloudFormation.
+
+While we could use the `sam deploy --guided` command in development (because the guided mode automatically creates the S3 bucket, whereas the non-guided mode does not), that can be error prone for a tutorial, and is not conducive to CI/CD pipelines.
+
+* Run this command to create a deployment bucket that will host your SAM CLI artifacts:
+
+```bash
+export DEPLOYMENT_BUCKET="samcli-deployment-bucket-myapplication"
+aws s3api create-bucket --bucket $DEPLOYMENT_BUCKET --region us-east-1
+```
 
 # Instructions
 
 ## Deployment
 
-We have some automation that bootstraps the deployment.
+### Step 1: Deployment settings
 
-* First, set some environment variables that describe your deployment. We have a bash script that supplies some default settings; feel free to alter them according to your needs.
+We have some automation that bootstraps the deployment in `deploy.sh`. However, that deployment script expects several environment variables.
+
+* Create a file titled `deploy_private_settings.sh`
+
+```bash
+touch deploy_private_settings.sh
+chmod +x ./deploy_private_settings.sh
+```
+
+* Specifically, you will need to set the values for the environment variables listed below. Insert those into the `deploy_private_settings.sh` file:
+
+```bash
+#!/usr/bin/env bash
+
+export DEPLOYMENT_BUCKET="" # name of the S3 bucket you created before 
+export DOMAIN_NAME="" # name of the Route53 hosted zone you created previously
+export WEBSITE_BUCKET=""  # this will be the name of the S3 bucket that is tied to your CloudFront. It's not public, and the name does not matter.
+export S3_PREFIX="policyguru"
+export STACK_NAME="policyguru"
+export CAPABILITIES="CAPABILITY_IAM"
+export AWS_REGION="us-east-1"
+```
+
+_Note: Just fill in the values for the environment variables `DEPLOYMENT_BUCKET`, `DOMAIN_NAME`, AND `WEBSITE_BUCKET`. You can leave the non-empty values as-is._
+
+* Now source the file so the environment variables are present in your shell session:
 
 ```bash
 source ./deploy_settings.sh
 ```
 
-Note: In the future, we will just set those environment variables via GitHub environment variables and run this deployment in GitHub actions.
+_Note: In the future, we will just set those environment variables via GitHub environment variables and run this deployment in GitHub actions._
+
+### Step 2: Run the deployment script
 
 * Then run the deployment script:
 
@@ -77,12 +132,13 @@ This will create the following resources that are defined in the [./template.yam
 
 It will also upload the static website artifacts to the S3 bucket mentioned above.
 
-### Validating the API
+### Step 3: Validating the API
 
 * If we deployed the API to https://api.example.com, you can do a test query with the following:
 
-```
-curl "https://api.example.net/query/actions?service=s3&name=getobject"
+```bash
+export DOMAIN_NAME="example.com"
+curl "https://api.${DOMAIN_NAME}/query/actions?service=s3&name=getobject"
 ```
 
 That will return:
@@ -91,7 +147,9 @@ That will return:
 {"s3": [{"action": "s3:GetObject", "description": "Grants permission to retrieve objects from Amazon S3", "access_level": "Read", "resource_arn_format": "arn:${Partition}:s3:::${BucketName}/${ObjectName}", "condition_keys": [], "dependent_actions": []}, {"action": "s3:GetObject", "description": "Grants permission to retrieve objects from Amazon S3", "access_level": "Read", "resource_arn_format": "*", "condition_keys": [], "dependent_actions": []}]}
 ```
 
-## Testing and Development
+# Development
+
+## Environment setup
 
 * Create virtual environment and activate it
 
@@ -106,11 +164,14 @@ pip3 install -r requirements.txt
 pip3 install -r requirements-dev.txt
 ```
 
+## Testing
+
 * Run unit tests
 
 ```bash
 # Option 1: Use PyInvoke that automates this
 invoke test.pytest
+
 # Option 2: Run Pytest directly
 pytest -v
 ```
@@ -149,7 +210,7 @@ sam local invoke QueryResourcesFunction --event events/query-resources-mock.json
 sam local invoke QueryConditionsFunction --event events/query-conditions-mock.json
 ```
 
-## Local Flask API
+### Local Flask API
 
 We set up a Flask API option for local testing and development purposes - particularly for testing out the UI.
 
@@ -169,14 +230,6 @@ invoke develop.flask
 python3 local_run.py
 ```
 
-## Creating a new instance of this entirely
-
-```bash
-sam init \
-    --base-image amazon/python3.8-base \
-    -d pip
-    -o 
-```
 
 # Resources
 

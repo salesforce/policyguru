@@ -17,6 +17,9 @@ Parameters:
   DomainName:
     Type: String
     Description: The domain name
+  WebsiteBucketName:
+    Type: String
+    Description: The name of the S3 bucket that will host the website files
   Region:
     Type: String
     Description: The AWS region
@@ -171,7 +174,7 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       # Change bucket name to reflect your website
-      BucketName: !Sub "${DomainName}"
+      BucketName: !Sub "${WebsiteBucketName}"
 
   S3BucketPolicy:
       Type: AWS::S3::BucketPolicy
