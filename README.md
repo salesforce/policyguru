@@ -1,27 +1,34 @@
-# policy-sentry-ui
+# policyguru
 
-Here, we will store code for the following:
+REST API for [Policy Sentry](https://github.com/salesforce/policy_sentry/), and [Cloudsplaining](https://github.com/salesforce/cloudsplaining). This repository also includes a Web UI.
 
-* REST API for Policy Sentry
-  * Will be deployed to AWS as Lambdas, exposed as an API gateway
-  * Uses [AWS Serverless Application Model (SAM)](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
-* User interface POC for Policy Sentry
+This REST API also supports the PolicyGuru Terraform provider, which allows you to write least privilege policies directly from Terraform [terraform-provider-policyguru](https://github.com/salesforce/terraform-provider-policyguru).
+
+## Contents
 
 <!--ts-->
-   * [policy-sentry-ui](#policy-sentry-ui)
+   * [policy-sentry-ui](#policyguru)
       * [Prerequisites](#prerequisites)
+         * [Requirement 1: Things to install](#requirement-1-things-to-install)
+         * [Requirement 2: Purchase a domain name via Route53](#requirement-2-purchase-a-domain-name-via-route53)
+         * [Requirement 3: Create a Route53 Public Hosted Zone](#requirement-3-create-a-route53-public-hosted-zone)
+         * [Requirement 4: Create an S3 bucket to hold the SAM CLI artifacts](#requirement-4-create-an-s3-bucket-to-hold-the-sam-cli-artifacts)
    * [Instructions](#instructions)
       * [Deployment](#deployment)
-         * [Validating the API](#validating-the-api)
-      * [Testing and Development](#testing-and-development)
+         * [Step 1: Deployment settings](#step-1-deployment-settings)
+         * [Step 2: Run the deployment script](#step-2-run-the-deployment-script)
+         * [Step 3: Validating the API](#step-3-validating-the-api)
+   * [Development](#development)
+      * [Environment setup](#environment-setup)
+      * [Testing](#testing)
       * [Running locally](#running-locally)
          * [Invoking Lambdas locally](#invoking-lambdas-locally)
             * [Option 1: Leverage PyInvoke command](#option-1-leverage-pyinvoke-command)
             * [Option 2: Run individual commands](#option-2-run-individual-commands)
-      * [Local Flask API](#local-flask-api)
+         * [Local Flask API](#local-flask-api)
    * [Resources](#resources)
 
-<!-- Added by: kmcquade, at: Mon Dec 14 12:19:18 EST 2020 -->
+<!-- Added by: kmcquade, at: Tue Dec 15 13:12:54 EST 2020 -->
 
 <!--te-->
 
@@ -47,7 +54,7 @@ brew install aws-sam-cli
 
 ### Requirement 2: Purchase a domain name via Route53
 
-You will need to purchase a domain name via Route53. You can follow the documentation here: https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html.
+You will need to purchase a domain name via Route53. You can follow the documentation [here](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html).
 
 ### Requirement 3: Create a Route53 Public Hosted Zone
 

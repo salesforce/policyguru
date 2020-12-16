@@ -40,13 +40,13 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DEPLOYMENT_BUCKET: ${{ secrets.DEPLOYMENT_BUCKET }}
+          WEBSITE_BUCKET: ${{ secrets.WEBSITE_BUCKET }}
           AWS_REGION: "us-east-1"
-          STACK_NAME: ${{ secrets.STACK_NAME }}
-          S3_BUCKET: ${{ secrets.S3_BUCKET }}
-          S3_PREFIX: ${{ secrets.S3_PREFIX }}
+          STACK_NAME: "policyguru"
+          S3_PREFIX: "policyguru"
           CAPABILITIES: "CAPABILITY_IAM"
-          DOMAIN_NAME: "sfdcspace.com"
-          SUBDOMAIN: "cloudsplaining"
+          DOMAIN_NAME: "policyguru.io"
         run: |
           ./deploy.sh
 
