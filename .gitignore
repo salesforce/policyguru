@@ -1,7 +1,19 @@
 # Working directories
 tmp
+.notes
 !.gitkeep
 unzip_requirements.py
+
+# Repository specific
+deploy_settings.sh
+deploy_private_settings.sh
+
+# github-markdown-toc
+README.md.orig*
+README.md.toc*
+gh-md-toc
+
+# AWS SAM
 .aws-sam
 
 # IDEs

@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  cloudsplaining.io
+  policyguru.io
 
-  Sample SAM Template for cloudsplaining.io
+  Sample SAM Template for policyguru.io
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -17,9 +17,9 @@ Parameters:
   DomainName:
     Type: String
     Description: The domain name
-  Subdomain:
+  WebsiteBucketName:
     Type: String
-    Description: The subdomain to include, without the domain name
+    Description: The name of the S3 bucket that will host the website files
   Region:
     Type: String
     Description: The AWS region
@@ -38,11 +38,26 @@ Resources:
         WritePolicy:
           Type: HttpApi
           Properties:
-            ApiId: !Ref CloudsplainingHttpApi
+            ApiId: !Ref HttpApi
             Path: /write
             Method: post
 
-  # Cloudsplaining Scan policy
+  # This one is used by the UI
+  CallPolicyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/write_policy/
+      Handler: app.ui_response_handler
+      Runtime: python3.8
+      Events:
+        WritePolicy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /call_policy
+            Method: post
+
+  # Cloudsplaining scan-policy-file function
   ScanPolicyFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -53,7 +68,7 @@ Resources:
         ScanPolicy:
           Type: HttpApi
           Properties:
-            ApiId: !Ref CloudsplainingHttpApi
+            ApiId: !Ref HttpApi
             Path: /scan
             Method: post
 
@@ -69,7 +84,7 @@ Resources:
         ScanPolicy:
           Type: HttpApi
           Properties:
-            ApiId: !Ref CloudsplainingHttpApi
+            ApiId: !Ref HttpApi
             Path: /query/actions
             Method: get
 
@@ -83,7 +98,7 @@ Resources:
         ScanPolicy:
           Type: HttpApi
           Properties:
-            ApiId: !Ref CloudsplainingHttpApi
+            ApiId: !Ref HttpApi
             Path: /query/resources
             Method: get
 
@@ -97,61 +112,17 @@ Resources:
         ScanPolicy:
           Type: HttpApi
           Properties:
-            ApiId: !Ref CloudsplainingHttpApi
+            ApiId: !Ref HttpApi
             Path: /query/conditions
             Method: get
 
-  # Certificate Manager
-  ApiCertificate:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Sub "${Subdomain}.${DomainName}"
-      DomainValidationOptions:
-        - DomainName: !Sub "${Subdomain}.${DomainName}"
-          HostedZoneId: !Sub "${HostedZoneId}"
-      ValidationMethod: DNS
-
-  # TODO: CloudFront distribution, like this: https://izifortune.com/serverless-website-sam-aws/
-  # TODO: Route53 records
-  # S3 bucket for UI files
-  StaticSite:
-    Type: AWS::S3::Bucket
-    Properties:
-      AccessControl: PublicRead
-      BucketName: !Sub "${Subdomain}.${DomainName}"
-      WebsiteConfiguration:
-        IndexDocument: index.html
-
-  StaticSiteS3BucketPolicy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket:
-        Ref: StaticSite
-      PolicyDocument:
-        Statement:
-          - Sid: PublicReadGetObject
-            Effect: Allow
-            Principal: "*"
-            Action:
-              - s3:GetObject
-            Resource:
-              Fn::Join: [
-                "", [
-                "arn:aws:s3:::",
-                {
-                  "Ref": "StaticSite"
-                },
-                "/*"
-              ]
-              ]
-
   # API Gateway V2 type
-  CloudsplainingHttpApi:
+  HttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
       DisableExecuteApiEndpoint: true
       Domain:
-        DomainName: !Sub "${Subdomain}.${DomainName}"
+        DomainName: !Sub "api.${DomainName}"
         CertificateArn: !Ref ApiCertificate
         Route53:
           HostedZoneId: !Sub "${HostedZoneId}"
@@ -163,6 +134,103 @@ Resources:
           - GET
           - POST
         MaxAge: 600
+
+  # Certificate Manager
+  ApiCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub "api.${DomainName}"
+      DomainValidationOptions:
+        - DomainName: !Sub "api.${DomainName}"
+          HostedZoneId: !Sub "${HostedZoneId}"
+      ValidationMethod: DNS
+
+  WebCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub "${DomainName}"
+      DomainValidationOptions:
+        - DomainName: !Sub "${DomainName}"
+          HostedZoneId: !Sub "${HostedZoneId}"
+      ValidationMethod: DNS
+
+
+  WebsiteDNSName:
+    Type: AWS::Route53::RecordSet
+    DependsOn: StaticSite
+    Properties:
+      HostedZoneName: !Sub "${DomainName}."
+      Name: !Sub "${DomainName}"
+      Type: A
+      # For CloudFront, HostedZoneId is always Z2FDTNDATAQYW2, see:
+      # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html#cfn-route53-aliastarget-hostedzoneid
+      AliasTarget:
+        # CloudFront configuration
+        HostedZoneId: Z2FDTNDATAQYW2
+        DNSName: !GetAtt CloudfrontDistribution.DomainName
+
+# Static site for CloudFront
+  StaticSite:
+    Type: AWS::S3::Bucket
+    Properties:
+      # Change bucket name to reflect your website
+      BucketName: !Sub "${WebsiteBucketName}"
+
+  S3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref StaticSite
+        PolicyDocument:
+        # Restricting access to cloudfront only.
+          Statement:
+            -
+              Effect: Allow
+              Action: 's3:GetObject'
+              Resource:
+                - !Sub "arn:aws:s3:::${StaticSite}/*"
+              Principal:
+                AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}"
+
+  CloudFrontOriginAccessIdentity:
+    Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 'Serverless website OA'
+
+  CloudfrontDistribution:
+    Type: "AWS::CloudFront::Distribution"
+    Properties:
+      DistributionConfig:
+        Comment: "Cloudfront distribution for serverless website"
+        Aliases:
+          - !Sub "${DomainName}"
+        ViewerCertificate:
+          AcmCertificateArn: !Ref WebCertificate
+          MinimumProtocolVersion: TLSv1.2_2019
+          SslSupportMethod: sni-only
+        DefaultRootObject: "index.html"
+        Enabled: true
+        HttpVersion: http2
+        # List of origins that Cloudfront will connect to
+        Origins:
+          - Id: s3-website
+            DomainName: !GetAtt StaticSite.DomainName
+            S3OriginConfig:
+              # Restricting Bucket access through an origin access identity
+              OriginAccessIdentity:
+                Fn::Sub: 'origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}'
+        # To connect the CDN to the origins you need to specify behaviours
+        DefaultCacheBehavior:
+          # Compress resources automatically ( gzip )
+          Compress: true
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          ForwardedValues:
+            QueryString: false
+          TargetOriginId: s3-website
+          ViewerProtocolPolicy : redirect-to-https
 
 Outputs:
   ScanPolicyFunction:
