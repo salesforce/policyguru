@@ -48,7 +48,7 @@ function call_api() {
     var data = $( "form" ).serialize();
     $.ajax({
         type: "POST",
-        url: 'https://policyguru.io/call_policy',
+        url: 'https://api.policyguru.io/call_policy',
         data: data,
         success: function(response){
             document.getElementById('final_json').value = JSON.stringify(response, null, 4);
