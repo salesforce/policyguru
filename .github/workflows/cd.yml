@@ -42,11 +42,11 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           DEPLOYMENT_BUCKET: ${{ secrets.DEPLOYMENT_BUCKET }}
           WEBSITE_BUCKET: ${{ secrets.WEBSITE_BUCKET }}
-          AWS_REGION: "us-east-1"
+          AWS_REGION: ${{ secrets.AWS_REGION }}
           STACK_NAME: "policyguru"
           S3_PREFIX: "policyguru"
           CAPABILITIES: "CAPABILITY_IAM"
-          DOMAIN_NAME: "policyguru.io"
+          DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
         run: |
-          ./deploy.sh
+          ./scripts/deploy.sh
 

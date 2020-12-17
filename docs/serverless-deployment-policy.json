@@ -1,0 +1,318 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "SkipResourceConstraints",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:ListBucket",
+                "s3:GetObject",
+                "lambda:GetFunction",
+                "lambda:ListTags",
+                "lambda:UntagResource",
+                "lambda:TagResource",
+                "lambda:UpdateFunctionCode",
+                "lambda:GetFunctionConfiguration"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "MultMultNone",
+            "Effect": "Allow",
+            "Action": [
+                "acm:l*",
+                "cloudformation:describea*",
+                "cloudformation:describestackd*",
+                "cloudformation:describet*",
+                "cloudformation:es*",
+                "cloudformation:liste*",
+                "cloudformation:listi*",
+                "cloudformation:liststacks",
+                "cloudformation:listt*",
+                "cloudformation:v*",
+                "cloudfront:getca*",
+                "cloudfront:getf*",
+                "cloudfront:geto*",
+                "cloudfront:getp*",
+                "cloudfront:listc*",
+                "cloudfront:listd*",
+                "cloudfront:listf*",
+                "cloudfront:listo*",
+                "cloudfront:listp*",
+                "cloudfront:lists*",
+                "iam:generatec*",
+                "iam:generates*",
+                "iam:getacco*",
+                "iam:getcontextkeysforc*",
+                "iam:getcr*",
+                "iam:getor*",
+                "iam:getservicela*",
+                "iam:listacco*",
+                "iam:listgroups",
+                "iam:listo*",
+                "iam:listpolici*",
+                "iam:listroles",
+                "iam:listsa*",
+                "iam:listserve*",
+                "iam:listusers",
+                "iam:listv*",
+                "iam:pa*",
+                "iam:simulatec*",
+                "lambda:getac*",
+                "lambda:liste*",
+                "lambda:listfunctions",
+                "lambda:listl*",
+                "route53:geta*",
+                "route53:getche*",
+                "route53:getg*",
+                "route53:gethealthcheckc*",
+                "route53:gethostedzonec*",
+                "route53:gettrafficpolicyinstancec*",
+                "route53:listg*",
+                "route53:listh*",
+                "route53:listreu*",
+                "route53:listtrafficpolici*",
+                "route53:listtrafficpolicyinstances",
+                "route53:t*",
+                "s3:getaccesspoint",
+                "s3:getacco*",
+                "s3:lista*",
+                "s3:listj*"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Sid": "CloudformationMultStackcloudsplaining",
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:describec*",
+                "cloudformation:describestacke*",
+                "cloudformation:describestackr*",
+                "cloudformation:detectstackd*",
+                "cloudformation:detectstackr*",
+                "cloudformation:g*",
+                "cloudformation:ca*",
+                "cloudformation:co*",
+                "cloudformation:createc*",
+                "cloudformation:createstack",
+                "cloudformation:deletec*",
+                "cloudformation:deletestack",
+                "cloudformation:ex*",
+                "cloudformation:si*",
+                "cloudformation:updatestack",
+                "cloudformation:updatet*",
+                "cloudformation:describestacks",
+                "cloudformation:listc*",
+                "cloudformation:liststackr*",
+                "cloudformation:t*",
+                "cloudformation:un*",
+                "cloudformation:sets*"
+            ],
+            "Resource": [
+                "arn:aws:cloudformation:us-east-1:*:stack/policyguru*/*",
+                "arn:aws:cloudformation:us-east-1:*:stack/policyguru*/*",
+                "arn:aws:cloudformation:us-east-1:aws:transform/Serverless-2016-10-31"
+            ]
+        },
+        {
+            "Sid": "AcmMultCertificate",
+            "Effect": "Allow",
+            "Action": [
+                "acm:des*",
+                "acm:e*",
+                "acm:g*",
+                "acm:del*",
+                "acm:i*",
+                "acm:ren*",
+                "acm:res*",
+                "acm:u*",
+                "acm:a*",
+                "acm:rem*"
+            ],
+            "Resource": [
+                "arn:aws:acm:us-east-1:*:certificate/*"
+            ]
+        },
+        {
+            "Sid": "LambdaMultFunctionscanpolicyfunction",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:getal*",
+                "lambda:getf*",
+                "lambda:getpo*",
+                "lambda:listt*",
+                "lambda:getpr*",
+                "lambda:getpr*",
+                "lambda:createa*",
+                "lambda:createf*",
+                "lambda:deletea*",
+                "lambda:deletef*",
+                "lambda:i*",
+                "lambda:publishv*",
+                "lambda:putf*",
+                "lambda:updatea*",
+                "lambda:updatef*",
+                "lambda:deletep*",
+                "lambda:putp*",
+                "lambda:deletep*",
+                "lambda:putp*",
+                "lambda:lista*",
+                "lambda:listfunctione*",
+                "lambda:listp*",
+                "lambda:listv*",
+                "lambda:t*",
+                "lambda:un*",
+                "lambda:addp*",
+                "lambda:di*",
+                "lambda:e*",
+                "lambda:removep*"
+            ],
+            "Resource": [
+                "arn:aws:lambda:us-east-1:*:function:ScanPolicyFunction",
+                "arn:aws:lambda:us-east-1:*:function:ScanPolicyFunction/*",
+                "arn:aws:lambda:us-east-1:*:function:WritePolicyFunction",
+                "arn:aws:lambda:us-east-1:*:function:WritePolicyFunction/*",
+                "arn:aws:lambda:us-east-1:*:function:Query*",
+                "arn:aws:lambda:us-east-1:*:function:Query*/*"
+            ]
+        },
+        {
+            "Sid": "CloudformationMultStacksetcloudsplaining",
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:describestacki*",
+                "cloudformation:describestackse*",
+                "cloudformation:detectstacks*",
+                "cloudformation:gettemplates*",
+                "cloudformation:createstacki*",
+                "cloudformation:deletestacki*",
+                "cloudformation:deletestacks*",
+                "cloudformation:st*",
+                "cloudformation:updatestacki*",
+                "cloudformation:updatestacks*",
+                "cloudformation:liststacki*",
+                "cloudformation:liststackse*",
+                "cloudformation:t*",
+                "cloudformation:un*"
+            ],
+            "Resource": [
+                "arn:aws:cloudformation:us-east-1:*:stackset/policyguru*/*:*",
+                "arn:aws:cloudformation:us-east-1:*:stackset/policyguru/*:*"
+            ]
+        },
+        {
+            "Sid": "S3MultCloudsplaining",
+            "Effect": "Allow",
+            "Action": [
+                "s3:geto*",
+                "s3:a*",
+                "s3:deleteobject",
+                "s3:deleteobjectversion",
+                "s3:putobject",
+                "s3:putobjectl*",
+                "s3:putobjectr*",
+                "s3:replicated*",
+                "s3:replicateo*",
+                "s3:res*",
+                "s3:listm*",
+                "s3:deleteobjectt*",
+                "s3:deleteobjectversiont*",
+                "s3:putobjectt*",
+                "s3:putobjectversiont*",
+                "s3:replicatet*",
+                "s3:b*",
+                "s3:o*",
+                "s3:putobjecta*",
+                "s3:putobjectversiona*"
+            ],
+            "Resource": [
+                "arn:aws:s3:::*policyguru*/*",
+                "arn:aws:s3:::policyguru*/*"
+            ]
+        },
+        {
+            "Sid": "S3MultCloudsplainingnone",
+            "Effect": "Allow",
+            "Action": [
+                "s3:getaccel*",
+                "s3:getan*",
+                "s3:getb*",
+                "s3:gete*",
+                "s3:geti*",
+                "s3:getl*",
+                "s3:getm*",
+                "s3:getr*",
+                "s3:createb*",
+                "s3:deletebucket",
+                "s3:deletebucketo*",
+                "s3:deletebucketw*",
+                "s3:putaccel*",
+                "s3:putan*",
+                "s3:putbucketc*",
+                "s3:putbucketl*",
+                "s3:putbucketn*",
+                "s3:putbucketo*",
+                "s3:putbucketr*",
+                "s3:putbucketv*",
+                "s3:putbucketw*",
+                "s3:pute*",
+                "s3:puti*",
+                "s3:putl*",
+                "s3:putm*",
+                "s3:putr*",
+                "s3:listb*",
+                "s3:putbuckett*",
+                "s3:deletebucketp*",
+                "s3:putbucketa*",
+                "s3:putbucketp*"
+            ],
+            "Resource": [
+                "arn:aws:s3:::policyguru*",
+                "arn:aws:s3:::*policyguru*"
+            ]
+        },
+        {
+            "Sid": "IamMultRolecloudsplaining",
+            "Effect": "Allow",
+            "Action": [
+                "iam:getcontextkeysforp*",
+                "iam:getr*",
+                "iam:getserviceli*",
+                "iam:simulatep*",
+                "iam:listattachedr*",
+                "iam:listinstanceprofilesf*",
+                "iam:listrolep*",
+                "iam:listrolet*",
+                "iam:tagr*",
+                "iam:untagr*",
+                "iam:attachr*",
+                "iam:creater*",
+                "iam:createservicel*",
+                "iam:deleter*",
+                "iam:deleteservicel*",
+                "iam:detachr*",
+                "iam:pa*",
+                "iam:putr*",
+                "iam:updateas*",
+                "iam:updater*"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:role/policyguru*"
+            ]
+        },
+        {
+            "Sid": "ExecuteapiWriteExecuteapigeneral",
+            "Effect": "Allow",
+            "Action": [
+                "execute-api:i*",
+                "execute-api:m*"
+            ],
+            "Resource": [
+                "arn:aws:execute-api:us-east-1:*:*/*/*/*"
+            ]
+        }
+    ]
+}

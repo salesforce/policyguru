@@ -1,0 +1,30 @@
+site_name: PolicyGuru
+site_url: https://policyguru.readthedocs.io/
+repo_url: https://github.com/salesforce/policyguru/
+theme: material
+use_directory_urls: true
+markdown_extensions:
+    - codehilite
+    - tables
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_source: true
+#      watch:
+#        - policyguru/
+extra_css:
+  - custom.css
+nav:
+  - Home: 'index.md'
+  - Deployment: 'deployment.md'
+
+  - "<b>Contributing</b>":
+    - Contributing: 'contributing/contributing.md'
+    - Setup: 'contributing/setup.md'
+    - Testing: 'contributing/testing.md'
+    - Running locally: 'contributing/running-locally.md'
+    - Documentation: 'contributing/documentation.md'
