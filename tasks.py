@@ -7,6 +7,9 @@ logger = logging.getLogger(__name__)
 # Create the necessary collections (namespaces)
 ns = Collection()
 
+docs = Collection('docs')
+ns.add_collection(docs)
+
 test = Collection('test')
 ns.add_collection(test)
 
@@ -18,6 +21,18 @@ ns.add_collection(develop)
 
 integration = Collection('integration')
 ns.add_collection(integration)
+
+
+@task
+def build_docs(c):
+    """Create the documentation files and open them locally"""
+    c.run('mkdocs build')
+
+
+@task
+def serve_docs(c):
+    """Create the documentation files and open them locally"""
+    c.run('mkdocs serve --dev-addr "127.0.0.1:8001"')
 
 
 @task
@@ -161,8 +176,12 @@ def run_flask(c):
         sys.exit(1)
 
 
+# Add all testing tasks to the test collection
 unit.add_task(run_nosetests, 'nose')
 unit.add_task(run_pytest, 'pytest')
+
+docs.add_task(build_docs, "build-docs")
+docs.add_task(serve_docs, "serve-docs")
 
 test.add_task(format, 'format')
 test.add_task(run_linter, 'lint')

@@ -1,44 +1,6 @@
-# policyguru
+# Deployment
 
-REST API for [Policy Sentry](https://github.com/salesforce/policy_sentry/), and [Cloudsplaining](https://github.com/salesforce/cloudsplaining). This repository also includes a Web UI.
-
-This REST API also supports the PolicyGuru Terraform provider, which allows you to write least privilege AWS IAM policies directly from Terraform [terraform-provider-policyguru](https://github.com/salesforce/terraform-provider-policyguru).
-
-## Contents
-
-<!--ts-->
-   * [policyguru](#policyguru)
-      * [Contents](#contents)
-      * [Deployment instructions](#deployment-instructions)
-         * [Step 0: Install Prerequisites](#step-0-install-prerequisites)
-         * [Step 1: Purchase a domain name via Route53](#step-1-purchase-a-domain-name-via-route53)
-         * [Step 2: Create a Route53 Public Hosted Zone](#step-2-create-a-route53-public-hosted-zone)
-         * [Step 3: Create an S3 bucket to hold the SAM CLI artifacts](#step-3-create-an-s3-bucket-to-hold-the-sam-cli-artifacts)
-         * [Step 4: Ensure your IAM user has the minimum required permissions](#step-4-ensure-your-iam-user-has-the-minimum-required-permissions)
-         * [Step 5: Deployment Settings](#step-5-deployment-settings)
-            * [Step 5 (Option 1): Set Deployment settings as environment variables](#step-5-option-1-set-deployment-settings-as-environment-variables)
-            * [Step 5 (Option 2): Set Deployment settings via GitHub actions](#step-5-option-2-set-deployment-settings-via-github-actions)
-         * [Step 6: Run the deployment script](#step-6-run-the-deployment-script)
-      * [Step 6 (Option 2): Run the GitHub Action](#step-6-option-2-run-the-github-action)
-         * [Step 7: Validating the API](#step-7-validating-the-api)
-   * [Development](#development)
-      * [Environment setup](#environment-setup)
-      * [Testing](#testing)
-      * [Running locally](#running-locally)
-         * [Invoking Lambdas locally](#invoking-lambdas-locally)
-            * [Option 1: Leverage PyInvoke command](#option-1-leverage-pyinvoke-command)
-            * [Option 2: Run individual commands](#option-2-run-individual-commands)
-         * [Local Flask API](#local-flask-api)
-   * [Resources](#resources)
-
-<!-- Added by: kmcquade, at: Thu Dec 17 09:58:13 EST 2020 -->
-
-<!--te-->
-
-
-## Deployment instructions
-
-### Step 0: Install Prerequisites
+## Step 0: Install Prerequisites
 
 * AWS CLI
 
@@ -55,11 +17,11 @@ brew install aws-sam-cli
 * Docker: should be installed and running locally. See installation instructions [here](https://docs.docker.com/get-docker/)
 * Authenticate to your AWS account via CLI
 
-### Step 1: Purchase a domain name via Route53
+## Step 1: Purchase a domain name via Route53
 
 You will need to purchase a domain name via Route53. You can follow the documentation [here](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html).
 
-### Step 2: Create a Route53 Public Hosted Zone
+## Step 2: Create a Route53 Public Hosted Zone
 
 You will need to create a Route53 Public Hosted Zone that matches the domain name that you purchased in the previous step.
 
@@ -70,7 +32,7 @@ export DOMAIN_NAME="example.com"
 aws route53 create-hosted-zone --name $DOMAIN_NAME 
 ```
 
-### Step 3: Create an S3 bucket to hold the SAM CLI artifacts
+## Step 3: Create an S3 bucket to hold the SAM CLI artifacts
 
 The Severless Application Model (SAM) packages applications by creating a `.zip` file of your code and dependencies and uploading the file to an S3 bucket so it can be consumed by CloudFormation.
 
@@ -83,7 +45,7 @@ export DEPLOYMENT_BUCKET="samcli-deployment-bucket-myapplication"
 aws s3api create-bucket --bucket $DEPLOYMENT_BUCKET --region us-east-1
 ```
 
-### Step 4: Ensure your IAM user has the minimum required permissions
+## Step 4: Ensure your IAM user has the minimum required permissions
 
 The following IAM policy represents the minimum permissions needed to create the serverless infrastructure.
 
@@ -414,13 +376,13 @@ The following IAM policy represents the minimum permissions needed to create the
 </pre>
 </details>
 
-### Step 5: Deployment Settings
+## Step 5: Deployment Settings
 
 We will go over two options for deployment.
 * Option 1: Manual deployment (i.e., from the command line)
 * Option 2: From GitHub Actions
 
-#### Step 5 (Option 1): Set Deployment settings as environment variables
+### Step 5 (Option 1): Set Deployment settings as environment variables
 
 We have some automation that bootstraps the deployment in `scripts/deploy.sh`. However, that deployment script expects several environment variables.
 
@@ -453,7 +415,7 @@ _Note: Just fill in the values for the environment variables `DEPLOYMENT_BUCKET`
 source ./deploy_settings.sh
 ```
 
-#### Step 5 (Option 2): Set Deployment settings via GitHub actions
+### Step 5 (Option 2): Set Deployment settings via GitHub actions
 
 * After creating the IAM user, download the CSV file containing the AWS Access Keys and set up the access keys as Secrets in your GitHub repository. The official documentation for setting GitHub secrets is [here](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
 
@@ -471,8 +433,21 @@ source ./deploy_settings.sh
   * `AWS_REGION`: Set this to the AWS Region that you want to deploy this infrastructure to.
   * `DOMAIN_NAME`: Set this to the domain name that you created in Step 2.
 
+## Step 6: Deployment
 
-### Step 6: Run the deployment script
+We will go over two options for deployment in this section
+* Option 1: Manual deployment (i.e., from the command line)
+* Option 2: From GitHub Actions
+
+### Step 6 (Option 1): Build Serverless artifacts and Run the deployment script
+
+First you will need to build the serverless application using the `sam build --use-container`. This command gathers the build artifacts of your application's dependencies and places them in the proper format and location for next steps, such as locally testing, packaging, and deploying.
+
+* Run the build command:
+
+```bash
+sam build --use-container
+```
 
 * Then run the deployment script:
 
@@ -480,7 +455,7 @@ source ./deploy_settings.sh
 ./scripts/deploy.sh
 ```
 
-This will create the following resources that are defined in the [./template.yaml](./template.yaml) file:
+This will create the following resources that are defined in the [./template.yaml](../template.yaml) file:
 * **Lambda functions** for:
   * Policy Sentry's write-policy function
   * Cloudsplaining's scan-policy function
@@ -492,11 +467,11 @@ This will create the following resources that are defined in the [./template.yam
 
 It will also upload the static website artifacts to the S3 bucket mentioned above.
 
-## Step 6 (Option 2): Run the GitHub Action
+### Step 6 (Option 2): Run the GitHub Action
 
 With those secrets enabled, once you push to the `main` or `master` branches, your GitHub action should automatically deploy to the domain you provided.
 
-### Step 7: Validating the API
+## Step 7: Validating the API
 
 * If we deployed the API to https://api.example.com, you can do a test query with the following:
 
@@ -510,91 +485,3 @@ That will return:
 ```json
 {"s3": [{"action": "s3:GetObject", "description": "Grants permission to retrieve objects from Amazon S3", "access_level": "Read", "resource_arn_format": "arn:${Partition}:s3:::${BucketName}/${ObjectName}", "condition_keys": [], "dependent_actions": []}, {"action": "s3:GetObject", "description": "Grants permission to retrieve objects from Amazon S3", "access_level": "Read", "resource_arn_format": "*", "condition_keys": [], "dependent_actions": []}]}
 ```
-
-# Development
-
-## Environment setup
-
-* Create virtual environment and activate it
-
-```bash
-python3 -m venv ./venv && source venv/bin/activate
-```
-
-* Install dependencies
-
-```bash
-pip3 install -r requirements.txt
-pip3 install -r requirements-dev.txt
-```
-
-## Testing
-
-* Run unit tests
-
-```bash
-# Option 1: Use PyInvoke that automates this
-invoke test.pytest
-
-# Option 2: Run Pytest directly
-pytest -v
-```
-
-## Running locally
-
-### Invoking Lambdas locally
-
-#### Option 1: Leverage PyInvoke command
-
-Alternatively, you can just run the PyInvoke commands that will run all of the above:
-
-```bash
-# list available PyInvoke commands
-invoke -l
-invoke integration.sam-invoke
-```
-
-#### Option 2: Run individual commands
-
-First you will need to build the serverless application using the `sam build --use-container`. This command gathers the build artifacts of your application's dependencies and places them in the proper format and location for next steps, such as locally testing, packaging, and deploying.
-
-* Run the build command:
-
-```bash
-sam build --use-container
-```
-
-* Run functions locally and invoke them with the `sam local invoke` command.
-
-```bash
-sam local invoke WritePolicyFunction --event events/write-policy-mock.json
-sam local invoke ScanPolicyFunction --event events/scan-policy-mock.json
-sam local invoke QueryActionsFunction --event events/query-actions-mock.json
-sam local invoke QueryResourcesFunction --event events/query-resources-mock.json
-sam local invoke QueryConditionsFunction --event events/query-conditions-mock.json
-```
-
-### Local Flask API
-
-We set up a Flask API option for local testing and development purposes - particularly for testing out the UI.
-
-* First, install Dev dependencies so we can use Flask
-
-```bash
-pip3 install -r requirements-dev.txt
-```
-
-* Then run the Flask API locally
-
-```bash
-# Option 1: Use the PyInvoke wrapper
-invoke develop.flask
-
-# Option 2: Run the flask app directly
-python3 local_run.py
-```
-
-
-# Resources
-
-See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
