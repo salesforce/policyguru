@@ -48,5 +48,5 @@ jobs:
           CAPABILITIES: "CAPABILITY_IAM"
           DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
         run: |
-          ./scripts/deploy.sh
+          ./deploy.sh
 

@@ -422,7 +422,7 @@ We will go over two options for deployment.
 
 #### Step 5 (Option 1): Set Deployment settings as environment variables
 
-We have some automation that bootstraps the deployment in `scripts/deploy.sh`. However, that deployment script expects several environment variables.
+We have some automation that bootstraps the deployment in `./deploy.sh`. However, that deployment script expects several environment variables.
 
 * Create a file titled `deploy_private_settings.sh`
 
@@ -477,7 +477,7 @@ source ./deploy_settings.sh
 * Then run the deployment script:
 
 ```bash
-./scripts/deploy.sh
+./deploy.sh
 ```
 
 This will create the following resources that are defined in the [./template.yaml](./template.yaml) file:
