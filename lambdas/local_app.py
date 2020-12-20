@@ -28,7 +28,7 @@ def page_not_found(e):
 
 @app.route('/scan', methods=['POST'])
 def scan_lambda():
-    # do not change the request and response, it will break lambda
+    # do not change the request and response, it will break integration lambda
     request_data = {}
     request_data["body"] = json.dumps(request.get_json())
     response = cloudsplaining_scan_policy(request_data, "localTest")
@@ -39,7 +39,7 @@ def scan_lambda():
 # Only added "Get" so you can run Terraform provider locally
 @app.route('/write', methods=['POST'])
 def write_lambda():
-    # do not change the request and response, it will break lambda
+    # do not change the request and response, it will break integration lambda
     request_data = {}
     request_data["body"] = json.dumps(request.get_json())
     response = write_policy(request_data, "localTest")
@@ -48,7 +48,7 @@ def write_lambda():
 
 @app.route('/query/actions', methods=['GET'])
 def query_actions_lambda():
-    # do not change the request and response, it will break lambda
+    # do not change the request and response, it will break integration lambda
     request_data = {}
     request_data["queryStringParameters"] = request.args
     logger.info(request_data)
@@ -59,7 +59,7 @@ def query_actions_lambda():
 
 @app.route('/query/resources', methods=['GET'])
 def query_resources_lambda():
-    # do not change the request and response, it will break lambda
+    # do not change the request and response, it will break integration lambda
     request_data = {}
     request_data["queryStringParameters"] = request.args
     response = query_resources(request_data, "localTest")
@@ -69,7 +69,7 @@ def query_resources_lambda():
 
 @app.route('/query/conditions', methods=['GET'])
 def query_conditions_lambda():
-    # do not change the request and response, it will break lambda
+    # do not change the request and response, it will break integration lambda
     request_data = {}
     request_data["queryStringParameters"] = request.args
     response = query_conditions(request_data, "localTest")
