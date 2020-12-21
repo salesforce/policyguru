@@ -73,7 +73,7 @@ def query_conditions_lambda():
     request_data = {}
     request_data["queryStringParameters"] = request.args
     response = query_conditions(request_data, "localTest")
-    logger.info(response)
+    print (response)
     return jsonify(response)
 
 

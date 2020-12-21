@@ -56,12 +56,11 @@ class TestWritePolicy(unittest.TestCase):
         payload = json.dumps(mock_data)
 
         # When
-        response = self.app.post("/write", headers={"Content-Type": "application/json"}, data=payload)
+        response = self.app.post("/write", headers={"Content-Type": "application/json"}, data='{"read": ["arn:aws:s3:::mybucket"]}')
         print(json.dumps(response.json, indent=4))
         self.assertEqual(200, response.status_code)
 
-        policy = json.loads(response.json.get("body"))
-        self.assertTrue(response.json.get("statusCode") == 200)
+        policy = json.loads((response.json))['body']
         self.assertTrue(policy['Statement'][0]['Sid'] == "S3ReadBucket")
         self.assertTrue(len(policy['Statement'][0]['Action']) > 20)
         self.assertTrue(len(policy["Statement"][0]["Resource"]) == 1)

@@ -66,14 +66,9 @@ class TestQueryConditions(unittest.TestCase):
         self.assertTrue("secretsmanager:KmsKeyId" in result)
 
     def test_query_conditions_flask(self):
-        # Given
-        mock_file = os.path.join(mock_events_folder, "query-conditions-mock.json")
-        with open(mock_file) as f:
-            mock_data = json.load(f)
-        payload = json.dumps(mock_data)
-
         # When
-        response = self.app.get("/query/conditions", headers={"Content-Type": "application/json"}, data=payload)
+        response = self.app.get("/query/conditions?service=secretsmanager")
+        assert (response is not None, response)
         response = response.json
         # print(json.dumps(response, indent=4))
         result = json.loads(response.get("body"))
