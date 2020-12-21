@@ -54,11 +54,12 @@ class TestWritePolicy(unittest.TestCase):
         # Given
         mock_file = os.path.join(mock_events_folder, "write-policy-mock.json")
         with open(mock_file) as f:
-            mock_data = json.load(f)
-        payload = json.dumps(mock_data)
+            contents = f.read()
+            mock_data = json.loads(contents)
+        payload_body = json.loads(mock_data["body"])
 
         # When
-        response = self.app.post("/write", headers={"Content-Type": "application/json"}, data='{"read": ["arn:aws:s3:::mybucket"]}')
+        response = self.app.post("/write", headers={"Content-Type": "application/json"}, data=json.dumps(payload_body))
         print(json.dumps(response.json, indent=4))
         self.assertEqual(200, response.status_code)
 
