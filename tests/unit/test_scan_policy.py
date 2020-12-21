@@ -69,10 +69,10 @@ class TestScanPolicy(unittest.TestCase):
         with open(mock_file) as f:
             contents = f.read()
             mock_data = json.loads(contents)
-        payload = json.dumps(mock_data)
+        payload_body = json.loads(mock_data["body"])
 
         # When
-        response = self.app.post("/scan", headers={"Content-Type": "application/json"}, data=payload)
+        response = self.app.post("/scan", headers={"Content-Type": "application/json"}, data=json.dumps(payload_body))
         print(json.dumps(response.json, indent=4))
 
         # Then
@@ -92,4 +92,4 @@ class TestScanPolicy(unittest.TestCase):
                 ]
             }
         self.assertEqual(200, response.status_code)
-        self.assertEqual(json.loads(response.json.get("body")), expected_response)
+        self.assertEqual(response.json, expected_response)

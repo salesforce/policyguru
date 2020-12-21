@@ -51,14 +51,8 @@ class TestQueryResources(unittest.TestCase):
             self.assertTrue(result.get(arn_type))
 
     def test_query_resources_flask(self):
-        # Given
-        mock_file = os.path.join(mock_events_folder, "query-resources-mock.json")
-        with open(mock_file) as f:
-            mock_data = json.load(f)
-        payload = json.dumps(mock_data)
-
         # When
-        response = self.app.get("/query/resources", headers={"Content-Type": "application/json"}, data=payload)
+        response = self.app.get("/query/resources?service=s3&list_arn_types=true", headers={"Content-Type": "application/json"})
         response = response.json
         # print(json.dumps(response, indent=4))
         result = json.loads(response.get("body"))

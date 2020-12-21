@@ -49,19 +49,21 @@ class TestWritePolicy(unittest.TestCase):
         self.assertTrue(len(policy["Statement"][0]["Resource"]) == 1)
 
     def test_write_flask(self):
+        # api gateway's request and response object is different than flask's request and response object
+        # so the tests for flask have different request/response
         # Given
         mock_file = os.path.join(mock_events_folder, "write-policy-mock.json")
         with open(mock_file) as f:
-            mock_data = json.load(f)
-        payload = json.dumps(mock_data)
+            contents = f.read()
+            mock_data = json.loads(contents)
+        payload_body = json.loads(mock_data["body"])
 
         # When
-        response = self.app.post("/write", headers={"Content-Type": "application/json"}, data=payload)
+        response = self.app.post("/write", headers={"Content-Type": "application/json"}, data=json.dumps(payload_body))
         print(json.dumps(response.json, indent=4))
         self.assertEqual(200, response.status_code)
 
-        policy = json.loads(response.json.get("body"))
-        self.assertTrue(response.json.get("statusCode") == 200)
+        policy = response.json
         self.assertTrue(policy['Statement'][0]['Sid'] == "S3ReadBucket")
         self.assertTrue(len(policy['Statement'][0]['Action']) > 20)
         self.assertTrue(len(policy["Statement"][0]["Resource"]) == 1)
