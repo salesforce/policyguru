@@ -14,7 +14,6 @@ def lambda_handler(event, context):
     service = (event["queryStringParameters"]).get('service')
     name = event["queryStringParameters"].get('name', None)
     body = query_condition_table(name, service)
-
     response = {"statusCode": 200, "body": json.dumps(body)}
     # print(json.dumps(body, indent=4))
     # print(body)
