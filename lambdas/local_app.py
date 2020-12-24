@@ -51,7 +51,6 @@ def query_actions_lambda():
     # do not change the request_data and response, it will break integration lambda
     request_data = {}
     request_data["queryStringParameters"] = request.args
-    logger.info(request_data)
     response = query_actions(request_data, "localTest")
     logger.info(response)
     return jsonify(response)
