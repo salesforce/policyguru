@@ -3,7 +3,7 @@
 <!-- CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 <link href="custom.css" rel="stylesheet" media="screen">
-<!-- <script src="custom.js"></script> -->
+<script src="custom.js"></script>
 
 <!-- jQuery and JS bundle w/ Popper.js -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
@@ -15,15 +15,14 @@
 </head>
 <body>
 
-<h1>This page is disabled for now. It was originally published as a POC. Please come back later.</h1>
 
-<!--
+
 <nav id="navbar-example2" class="navbar navbar-dark bg-dark">
     <a class="navbar-brand display-4" href="#">Policy Sentry</a>
 </nav>
 <div class="container">
 
-<form>
+<form class="needs-validation" id="tab_id" novalidate>
     <h1 class="display-5">Actions Section</h1>
     <table id="action_table">
         <tr>
@@ -42,7 +41,10 @@
                 </select>
             </td>
             <td class="text_width">
-                <input type="text" class="form-control" id="action_arn" placeholder="arn1, arn2, ..">
+                <input type="text" class="form-control" id="action_arn" placeholder="arn1, arn2, .." pattern="^(\s?arn:[\w\-,]+:[\S,]+:[\w\-,]*:[\d,]*:[\w\/\S,]+\s?,)+(\s?arn:[\w\-,]+:[\S,]+:[\w\-,]*:[\d,]*:[\w\/\S,]+)$" required>
+                <div class="invalid-feedback">
+                    Invalid arn pattern, enter arns seperated by comma
+                </div>
             </td>
             <td class="btn_width">
                 <button type="button" class="btn btn-primary" onclick="add_action('action')">Add</button>
@@ -70,7 +72,10 @@
                 </select>
             </td>
             <td class="text_width">
-                <input type="text" class="form-control" id="wc_arn" placeholder="arn1, arn2, ..">
+                <input type="text" class="form-control" id="wc_arn" placeholder="arn1, arn2, .." pattern="^(\s?arn:[\w\-,]+:[\S,]+:[\w\-,]*:[\d,]*:[\w\/\S,]+\s?,)+(\s?arn:[\w\-,]+:[\S,]+:[\w\-,]*:[\d,]*:[\w\/\S,]+)$" required>
+                <div class="invalid-feedback">
+                    Invalid arn pattern, enter arns seperated by comma
+                </div>
             </td>
             <td class="btn_width">
                 <button type="button" class="btn btn-primary" onclick="add_action('wc')">Add</button>
@@ -103,6 +108,5 @@
 </form>
 </div>
 
--->
 </body>
 </html>
