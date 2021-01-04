@@ -1,5 +1,6 @@
-policy_sentry==0.10.0
+fastapi==0.63.0
+uvicorn==0.13.2
+starlette==0.13.6
+mangum>=0.10.0
+policy_sentry==0.11.2
 cloudsplaining==0.2.4
-flask==1.1.2
-flask_swagger==0.2.14
-urllib3==1.25.11
