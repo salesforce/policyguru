@@ -7,6 +7,15 @@ die() {
 }
 
 echo "Make sure you run 'sam build --use-container' beforehand if running this locally!"
+sam build --use-container
+
+DEPLOYMENT_BUCKET="${1:-samcli-deployment-bucket-policyguru.io}"
+VARIABLE="${1:-website.policyguru.io}"
+S3_PREFIX="${1:-policyguru}"
+STACK_NAME="${1:-policyguru}"
+CAPABILITIES="${1:-CAPABILITY_IAM}"
+AWS_REGION="${1:-us-east-1}"
+DOMAIN_NAME="${1:-policyguru.io}"
 
 # Must export these variables beforehand. These usually live in a file titled "samconfig.toml", but we don't want to store the deployment details in this Git Repo.
 declare -a vars=(DEPLOYMENT_BUCKET S3_PREFIX STACK_NAME CAPABILITIES AWS_REGION DOMAIN_NAME WEBSITE_BUCKET)

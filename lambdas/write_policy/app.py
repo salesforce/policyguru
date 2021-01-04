@@ -2,6 +2,7 @@ import json
 import logging
 from urllib.parse import parse_qs, unquote
 from policy_sentry.command.write_policy import write_policy_with_template
+
 try:
     import unzip_requirements
 except ImportError:
@@ -81,7 +82,7 @@ def lambda_handler(event, context):
 
 def ui_response_handler(event, context):
     event = event['body']
-    print("performing decode, event value is",event)
+    print("performing decode, event value is", event)
     event = parse_qs(event)
     print(event)
     output_data = {'mode': 'crud', 'name': '', 'read': [],
@@ -96,12 +97,12 @@ def ui_response_handler(event, context):
         indx = key.split('_')[-1]
         if 'arn' in key:
             if key.startswith('action'):
-                action_name = event['action_name_'+indx][0]
+                action_name = event['action_name_' + indx][0]
                 update_data = output_data
             else:
-                action_name = event['wc_name_'+indx][0]
+                action_name = event['wc_name_' + indx][0]
                 update_data = output_data['wildcard-only']
-            val = list(map(lambda x:x.strip(), unquote(val[0]).split(',')))
+            val = list(map(lambda x: x.strip(), unquote(val[0]).split(',')))
             update_data[action_name].extend(val)
 
     print("output data", output_data)
@@ -111,7 +112,7 @@ def ui_response_handler(event, context):
         'headers': {
             'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials' : True,
+            'Access-Control-Allow-Credentials': True,
             'Access-Control-Allow-Methods': 'POST,GET',
             'Content-Type': 'application/json'
         },
