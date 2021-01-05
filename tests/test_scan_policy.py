@@ -36,7 +36,7 @@ payload = {
 
 class TestScanPolicy(unittest.TestCase):
     def test_scan_iam_policy(self):
-        response = client.put("/scan-iam-policy", json.dumps(payload))
+        response = client.post("/scan-iam-policy", json.dumps(payload))
         self.assertTrue(response.status_code == 200)
         result = response.json()
 

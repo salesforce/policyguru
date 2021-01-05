@@ -151,7 +151,8 @@ class TestWritePolicy(unittest.TestCase):
                 "read": ["arn:aws:s3:::mybucket/*"]
             }
         }
-        response = client.put("/write-iam-policy", json.dumps(payload))
+        response = client.post("/write-iam-policy", json.dumps(payload))
+        print(response.json())
         self.assertTrue(response.status_code == 200)
         results = response.json()
         self.assertListEqual(get_sid_names_from_policy(results), ["S3ReadObject"])
