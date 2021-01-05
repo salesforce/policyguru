@@ -11,8 +11,6 @@ logger = logging.getLogger()
 @router.get("/")
 async def read_main(request: Request):
     # some async operation could happen here
-    print("ROOT DUDE")
-    logger.debug("ROOT DUDE")
     if request.scope.get("aws.event"):
         data = {
             "msg": "I see you are running in AWS",

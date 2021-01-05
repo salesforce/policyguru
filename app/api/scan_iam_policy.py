@@ -85,7 +85,7 @@ class ScanPolicyResponse(BaseModel):
     )
 
 
-@router.put("/scan-iam-policy", response_model=ScanPolicyResponse)
+@router.post("/scan-iam-policy", response_model=ScanPolicyResponse)
 async def scan_iam_policy(
     item: ScanPolicyInput
 ):

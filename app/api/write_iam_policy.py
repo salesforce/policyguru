@@ -175,7 +175,7 @@ class WritePolicyTemplate:
         return crud_template
 
 
-@router.put("/write-iam-policy", response_model=WritePolicyResponse)
+@router.post("/write-iam-policy", response_model=WritePolicyResponse)
 async def write_iam_policy(
     item: WritePolicyInput
 ):
