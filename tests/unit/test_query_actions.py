@@ -2,7 +2,7 @@ import unittest
 import json
 import os
 from lambdas.query_actions.app import lambda_handler
-from lambdas.local_app import app
+# from lambdas.local_app import app
 
 mock_events_folder = os.path.join(
     os.path.dirname(__file__),
@@ -13,8 +13,8 @@ mock_events_folder = os.path.join(
 
 
 class TestQueryActions(unittest.TestCase):
-    def setUp(self):
-        self.app = app.test_client()
+    # def setUp(self):
+    #     self.app = app.test_client()
 
     def test_query_actions(self):
         this_event = {
@@ -46,13 +46,13 @@ class TestQueryActions(unittest.TestCase):
             self.assertTrue(action_entry.get("access_level") == "Read")
             self.assertTrue(action_entry.get("action") == "s3:GetObject")
 
-    def test_query_actions_flask(self):
-        # When
-        response = self.app.get("/query/actions?service=s3&name=GetObject", headers={"Content-Type": "application/json"})
-        response = response.json
-        # print(json.dumps(response, indent=4))
-        result = json.loads(response.get("body"))
-        self.assertTrue(len(result['s3']) == 2)
-        for action_entry in result["s3"]:
-            self.assertTrue(action_entry.get("access_level") == "Read")
-            self.assertTrue(action_entry.get("action") == "s3:GetObject")
+    # def test_query_actions_flask(self):
+    #     # When
+    #     response = self.app.get("/query/actions?service=s3&name=GetObject", headers={"Content-Type": "application/json"})
+    #     response = response.json
+    #     # print(json.dumps(response, indent=4))
+    #     result = json.loads(response.get("body"))
+    #     self.assertTrue(len(result['s3']) == 2)
+    #     for action_entry in result["s3"]:
+    #         self.assertTrue(action_entry.get("access_level") == "Read")
+    #         self.assertTrue(action_entry.get("action") == "s3:GetObject")

@@ -2,7 +2,7 @@ import unittest
 import json
 import os
 from lambdas.query_conditions.app import lambda_handler
-from lambdas.local_app import app
+# from lambdas.local_app import app
 
 mock_events_folder = os.path.join(
     os.path.dirname(__file__),
@@ -13,8 +13,8 @@ mock_events_folder = os.path.join(
 
 
 class TestQueryConditions(unittest.TestCase):
-    def setUp(self):
-        self.app = app.test_client()
+    # def setUp(self):
+    #     self.app = app.test_client()
 
     def test_query_conditions(self):
         this_event = {
@@ -65,14 +65,14 @@ class TestQueryConditions(unittest.TestCase):
         # Ensure that the content of the results contains one of the expected values
         self.assertTrue("secretsmanager:KmsKeyId" in result)
 
-    def test_query_conditions_flask(self):
-        # When
-        response = self.app.get("/query/conditions?service=secretsmanager")
-        assert (response is not None, response)
-        response = response.json
-        # print(json.dumps(response, indent=4))
-        result = json.loads(response.get("body"))
-        print(json.dumps(result, indent=4))
-        self.assertTrue(len(result) > 13)
-        # Ensure that the content of the results contains one of the expected values
-        self.assertTrue("secretsmanager:KmsKeyId" in result)
+    # def test_query_conditions_flask(self):
+    #     # When
+    #     response = self.app.get("/query/conditions?service=secretsmanager")
+    #     assert (response is not None, response)
+    #     response = response.json
+    #     # print(json.dumps(response, indent=4))
+    #     result = json.loads(response.get("body"))
+    #     print(json.dumps(result, indent=4))
+    #     self.assertTrue(len(result) > 13)
+    #     # Ensure that the content of the results contains one of the expected values
+    #     self.assertTrue("secretsmanager:KmsKeyId" in result)
