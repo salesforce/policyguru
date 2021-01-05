@@ -116,6 +116,24 @@ Resources:
             Path: /query/conditions
             Method: get
 
+  PolicyGuruLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /{proxy+}
+            Method: ANY
+      FunctionName: policyguru-lambda
+      CodeUri: ./
+      Handler: app.main.handler
+      Runtime: python3.8
+      Timeout: 300
+      MemorySize: 128
+      Description: The FastAPI Lambda that consolidates PolicyGuru into a single lambda
+
   # API Gateway V2 type
   HttpApi:
     Type: AWS::Serverless::HttpApi

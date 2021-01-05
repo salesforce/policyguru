@@ -28,7 +28,7 @@ This REST API also supports the PolicyGuru Terraform provider, which allows you 
          * [Invoking Lambdas locally](#invoking-lambdas-locally)
             * [Option 1: Leverage PyInvoke command](#option-1-leverage-pyinvoke-command)
             * [Option 2: Run individual commands](#option-2-run-individual-commands)
-         * [Local Flask API](#local-flask-api)
+         * [Local Flask API](#local-fastapi)
    * [Resources](#resources)
 
 <!-- Added by: kmcquade, at: Thu Dec 17 09:58:13 EST 2020 -->
@@ -574,26 +574,23 @@ sam local invoke QueryResourcesFunction --event events/query-resources-mock.json
 sam local invoke QueryConditionsFunction --event events/query-conditions-mock.json
 ```
 
-### Local Flask API
+### Local FastAPI
 
-We set up a Flask API option for local testing and development purposes - particularly for testing out the UI.
+We set up a FastAPI option for local testing and development purposes - particularly for testing out the UI.
 
-* First, install Dev dependencies so we can use Flask
+* First, install all dependencies
 
 ```bash
+pip3 install -r requirements.txt
 pip3 install -r requirements-dev.txt
 ```
 
-* Then run the Flask API locally
+* Then run the API using Uvicorn, a WSGI server.
 
 ```bash
-# Option 1: Use the PyInvoke wrapper
-invoke develop.flask
-
-# Option 2: Run the flask app directly
-python3 local_run.py
+# Run the API locally. You can access the docs at localhost:8080/docs
+make run
 ```
-
 
 # Resources
 

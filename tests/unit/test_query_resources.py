@@ -2,7 +2,7 @@ import unittest
 import os
 import json
 from lambdas.query_resources.app import lambda_handler
-from lambdas.local_app import app
+# from lambdas.local_app import app
 
 mock_events_folder = os.path.join(
     os.path.dirname(__file__),
@@ -13,8 +13,8 @@ mock_events_folder = os.path.join(
 
 
 class TestQueryResources(unittest.TestCase):
-    def setUp(self):
-        self.app = app.test_client()
+    # def setUp(self):
+    #     self.app = app.test_client()
 
     def test_query_resources(self):
         this_event = {
@@ -49,12 +49,12 @@ class TestQueryResources(unittest.TestCase):
         result = json.loads(response.get("body"))
         for arn_type in ["accesspoint", "bucket", "object", "job"]:
             self.assertTrue(result.get(arn_type))
-
-    def test_query_resources_flask(self):
-        # When
-        response = self.app.get("/query/resources?service=s3&list_arn_types=true", headers={"Content-Type": "application/json"})
-        response = response.json
-        # print(json.dumps(response, indent=4))
-        result = json.loads(response.get("body"))
-        for arn_type in ["accesspoint", "bucket", "object", "job"]:
-            self.assertTrue(result.get(arn_type))
+    #
+    # def test_query_resources_flask(self):
+    #     # When
+    #     response = self.app.get("/query/resources?service=s3&list_arn_types=true", headers={"Content-Type": "application/json"})
+    #     response = response.json
+    #     # print(json.dumps(response, indent=4))
+    #     result = json.loads(response.get("body"))
+    #     for arn_type in ["accesspoint", "bucket", "object", "job"]:
+    #         self.assertTrue(result.get(arn_type))

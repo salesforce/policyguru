@@ -2,7 +2,7 @@ import unittest
 import os
 import json
 from lambdas.scan_policy.app import lambda_handler
-from lambdas.local_app import app
+# from lambdas.local_app import app
 
 mock_events_folder = os.path.join(
     os.path.dirname(__file__),
@@ -13,8 +13,8 @@ mock_events_folder = os.path.join(
 
 
 class TestScanPolicy(unittest.TestCase):
-    def setUp(self):
-        self.app = app.test_client()
+    # def setUp(self):
+    #     self.app = app.test_client()
 
     def test_scan_policy(self):
         this_policy_document = {
@@ -63,33 +63,33 @@ class TestScanPolicy(unittest.TestCase):
         self.assertTrue(result["ServicesAffected"][0] == "s3")
         self.assertTrue(result["DataExfiltration"][0] == "s3:GetObject")
 
-    def test_scan_flask(self):
-        # Given
-        mock_file = os.path.join(mock_events_folder, "scan-policy-mock.json")
-        with open(mock_file) as f:
-            contents = f.read()
-            mock_data = json.loads(contents)
-        payload_body = json.loads(mock_data["body"])
-
-        # When
-        response = self.app.post("/scan", headers={"Content-Type": "application/json"}, data=json.dumps(payload_body))
-        print(json.dumps(response.json, indent=4))
-
-        # Then
-        expected_response = {
-                "CredentialsExposure": [],
-                "DataExfiltration": [
-                    "s3:GetObject"
-                ],
-                "InfrastructureModification": [
-                    "s3:GetObject"
-                ],
-                "PrivilegeEscalation": [],
-                "ResourceExposure": [],
-                "ServiceWildcard": [],
-                "ServicesAffected": [
-                    "s3"
-                ]
-            }
-        self.assertEqual(200, response.status_code)
-        self.assertEqual(response.json, expected_response)
+    # def test_scan_flask(self):
+    #     # Given
+    #     mock_file = os.path.join(mock_events_folder, "scan-policy-mock.json")
+    #     with open(mock_file) as f:
+    #         contents = f.read()
+    #         mock_data = json.loads(contents)
+    #     payload_body = json.loads(mock_data["body"])
+    #
+    #     # When
+    #     response = self.app.post("/scan", headers={"Content-Type": "application/json"}, data=json.dumps(payload_body))
+    #     print(json.dumps(response.json, indent=4))
+    #
+    #     # Then
+    #     expected_response = {
+    #             "CredentialsExposure": [],
+    #             "DataExfiltration": [
+    #                 "s3:GetObject"
+    #             ],
+    #             "InfrastructureModification": [
+    #                 "s3:GetObject"
+    #             ],
+    #             "PrivilegeEscalation": [],
+    #             "ResourceExposure": [],
+    #             "ServiceWildcard": [],
+    #             "ServicesAffected": [
+    #                 "s3"
+    #             ]
+    #         }
+    #     self.assertEqual(200, response.status_code)
+    #     self.assertEqual(response.json, expected_response)

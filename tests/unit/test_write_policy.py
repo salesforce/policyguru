@@ -2,7 +2,7 @@ import unittest
 import os
 import json
 from lambdas.write_policy.app import lambda_handler
-from lambdas.local_app import app
+# from lambdas.local_app import app
 
 mock_events_folder = os.path.join(
     os.path.dirname(__file__),
@@ -13,8 +13,8 @@ mock_events_folder = os.path.join(
 
 
 class TestWritePolicy(unittest.TestCase):
-    def setUp(self):
-        self.app = app.test_client()
+    # def setUp(self):
+    #     self.app = app.test_client()
 
     def test_write_policy(self):
         this_event = {
@@ -48,22 +48,22 @@ class TestWritePolicy(unittest.TestCase):
         self.assertTrue(len(policy['Statement'][0]['Action']) > 20)
         self.assertTrue(len(policy["Statement"][0]["Resource"]) == 1)
 
-    def test_write_flask(self):
-        # api gateway's request and response object is different than flask's request and response object
-        # so the tests for flask have different request/response
-        # Given
-        mock_file = os.path.join(mock_events_folder, "write-policy-mock.json")
-        with open(mock_file) as f:
-            contents = f.read()
-            mock_data = json.loads(contents)
-        payload_body = json.loads(mock_data["body"])
-
-        # When
-        response = self.app.post("/write", headers={"Content-Type": "application/json"}, data=json.dumps(payload_body))
-        print(json.dumps(response.json, indent=4))
-        self.assertEqual(200, response.status_code)
-
-        policy = response.json
-        self.assertTrue(policy['Statement'][0]['Sid'] == "S3ReadBucket")
-        self.assertTrue(len(policy['Statement'][0]['Action']) > 20)
-        self.assertTrue(len(policy["Statement"][0]["Resource"]) == 1)
+    # def test_write_flask(self):
+    #     # api gateway's request and response object is different than flask's request and response object
+    #     # so the tests for flask have different request/response
+    #     # Given
+    #     mock_file = os.path.join(mock_events_folder, "write-policy-mock.json")
+    #     with open(mock_file) as f:
+    #         contents = f.read()
+    #         mock_data = json.loads(contents)
+    #     payload_body = json.loads(mock_data["body"])
+    #
+    #     # When
+    #     response = self.app.post("/write", headers={"Content-Type": "application/json"}, data=json.dumps(payload_body))
+    #     print(json.dumps(response.json, indent=4))
+    #     self.assertEqual(200, response.status_code)
+    #
+    #     policy = response.json
+    #     self.assertTrue(policy['Statement'][0]['Sid'] == "S3ReadBucket")
+    #     self.assertTrue(len(policy['Statement'][0]['Action']) > 20)
+    #     self.assertTrue(len(policy["Statement"][0]["Resource"]) == 1)

@@ -16,9 +16,6 @@ ns.add_collection(test)
 unit = Collection('unit')
 ns.add_collection(unit)
 
-develop = Collection('develop')
-ns.add_collection(develop)
-
 integration = Collection('integration')
 ns.add_collection(integration)
 
@@ -161,21 +158,6 @@ def run_lambdas_directly(c):
         sys.exit(1)
 
 
-@task
-def run_flask(c):
-    """Running flask app locally"""
-    c.run('echo "Running flask app locally"')
-    try:
-        c.run('python3 local_run.py')
-        # c.run('python -m coverage report -m')
-    except UnexpectedExit as u_e:
-        logger.critical(f"FAIL! UnexpectedExit: {u_e}")
-        sys.exit(1)
-    except Failure as f_e:
-        logger.critical(f"FAIL: Failure: {f_e}")
-        sys.exit(1)
-
-
 # Add all testing tasks to the test collection
 unit.add_task(run_nosetests, 'nose')
 unit.add_task(run_pytest, 'pytest')
@@ -186,8 +168,6 @@ docs.add_task(serve_docs, "serve-docs")
 test.add_task(format, 'format')
 test.add_task(run_linter, 'lint')
 test.add_task(security_scan, 'security')
-
-develop.add_task(run_flask, 'flask')
 
 integration.add_task(run_sam_invoke, 'sam-invoke')
 integration.add_task(run_sam_validate, 'sam-validate')

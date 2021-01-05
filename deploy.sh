@@ -6,11 +6,10 @@ die() {
     exit
 }
 
-echo "Make sure you run 'sam build --use-container' beforehand if running this locally!"
 sam build --use-container
 
 DEPLOYMENT_BUCKET="${1:-samcli-deployment-bucket-policyguru.io}"
-VARIABLE="${1:-website.policyguru.io}"
+WEBSITE_BUCKET="${1:-website.policyguru.io}"
 S3_PREFIX="${1:-policyguru}"
 STACK_NAME="${1:-policyguru}"
 CAPABILITIES="${1:-CAPABILITY_IAM}"
