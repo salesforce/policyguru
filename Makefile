@@ -40,7 +40,7 @@ run-docker:
 
 .PHONY: run
 run:
-	uvicorn policyguru.main:app --host 0.0.0.0 --port 8080 --reload
+	uvicorn policyguru.main:app --host 0.0.0.0 --port 8002 --reload
 
 .PHONY: deploy
 deploy:
