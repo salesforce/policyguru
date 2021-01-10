@@ -100,7 +100,7 @@ Resources:
       Handler: policyguru.main.handler
       Runtime: python3.8
       Timeout: 300
-      MemorySize: 128
+      MemorySize: 256
       Description: The FastAPI Lambda that consolidates PolicyGuru into a single lambda
 
   # API Gateway V2 type
