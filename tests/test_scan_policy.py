@@ -2,8 +2,8 @@ import unittest
 import json
 from starlette.testclient import TestClient
 
-from app.api.scan_iam_policy import ScanPolicyInput, ScanPolicyResponse
-from app.main import app
+from policyguru.api.scan_iam_policy import ScanPolicyInput, ScanPolicyResponse
+from policyguru.main import app
 
 client = TestClient(app)
 

@@ -1,6 +1,0 @@
-{
-    "queryStringParameters": {
-        "service": "s3",
-        "list_arn_types": true
-    }
-}

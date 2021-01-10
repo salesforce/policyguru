@@ -32,7 +32,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: lambdas/write_policy/
-      Handler: app.lambda_handler
+      Handler: policyguru.lambda_handler
       Runtime: python3.8
       Events:
         WritePolicy:
@@ -47,7 +47,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: lambdas/write_policy/
-      Handler: app.ui_response_handler
+      Handler: policyguru.ui_response_handler
       Runtime: python3.8
       Events:
         WritePolicy:
@@ -62,7 +62,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: lambdas/scan_policy/
-      Handler: app.lambda_handler
+      Handler: policyguru.lambda_handler
       Runtime: python3.8
       Events:
         ScanPolicy:
@@ -71,50 +71,6 @@ Resources:
             ApiId: !Ref HttpApi
             Path: /scan
             Method: post
-
-  # Policy Sentry's query functions
-
-  QueryActionsFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: lambdas/query_actions/
-      Handler: app.lambda_handler
-      Runtime: python3.8
-      Events:
-        ScanPolicy:
-          Type: HttpApi
-          Properties:
-            ApiId: !Ref HttpApi
-            Path: /query/actions
-            Method: get
-
-  QueryResourcesFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: lambdas/query_resources/
-      Handler: app.lambda_handler
-      Runtime: python3.8
-      Events:
-        ScanPolicy:
-          Type: HttpApi
-          Properties:
-            ApiId: !Ref HttpApi
-            Path: /query/resources
-            Method: get
-
-  QueryConditionsFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: lambdas/query_conditions/
-      Handler: app.lambda_handler
-      Runtime: python3.8
-      Events:
-        ScanPolicy:
-          Type: HttpApi
-          Properties:
-            ApiId: !Ref HttpApi
-            Path: /query/conditions
-            Method: get
 
   PolicyGuruLambda:
     Type: AWS::Serverless::Function
@@ -128,7 +84,7 @@ Resources:
             Method: ANY
       FunctionName: policyguru-lambda
       CodeUri: ./
-      Handler: app.main.handler
+      Handler: policyguru.main.handler
       Runtime: python3.8
       Timeout: 300
       MemorySize: 128
@@ -145,12 +101,16 @@ Resources:
         Route53:
           HostedZoneId: !Sub "${HostedZoneId}"
       CorsConfiguration:
-        AllowOrigins: "*"
+        AllowOrigins:
+          - "*"
         AllowHeaders:
           - x-apigateway-header
+          - Content-Type
+          - X-Amz-Date
         AllowMethods:
           - GET
           - POST
+          - OPTIONS
         MaxAge: 600
 
   # Certificate Manager
