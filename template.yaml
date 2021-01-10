@@ -9,6 +9,19 @@ Description: >
 Globals:
   Function:
     Timeout: 3
+  Api:
+    # enable CORS; to make more specific, change the origin wildcard
+    # to a particular domain name, e.g. "'www.example.com'"
+    Cors:
+      AllowMethods:
+        - GET
+        - POST
+        - OPTIONS
+      AllowHeaders:
+        - x-apigateway-header
+        - Content-Type
+        - X-Amz-Date
+      AllowOrigin: "'*'"
 
 Parameters:
   HostedZoneId:
