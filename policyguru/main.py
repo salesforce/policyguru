@@ -3,8 +3,8 @@ import os
 from fastapi import FastAPI
 from mangum import Mangum
 
-from app.version import VERSION
-from app.api import root, scan_iam_policy, write_iam_policy
+from policyguru.version import VERSION
+from policyguru.api import root, scan_iam_policy, write_iam_policy
 
 TITLE = "PolicyGuru"
 DESCRIPTION = "This is an API for Policy Sentry and Cloudsplaining."

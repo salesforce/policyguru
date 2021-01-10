@@ -2,7 +2,7 @@ import unittest
 import os
 import json
 from lambdas.write_policy.app import lambda_handler
-# from lambdas.local_app import app
+# from lambdas.local_app import policyguru
 
 mock_events_folder = os.path.join(
     os.path.dirname(__file__),
@@ -14,7 +14,7 @@ mock_events_folder = os.path.join(
 
 class TestWritePolicy(unittest.TestCase):
     # def setUp(self):
-    #     self.app = app.test_client()
+    #     self.policyguru = policyguru.test_client()
 
     def test_write_policy(self):
         this_event = {
@@ -59,7 +59,7 @@ class TestWritePolicy(unittest.TestCase):
     #     payload_body = json.loads(mock_data["body"])
     #
     #     # When
-    #     response = self.app.post("/write", headers={"Content-Type": "application/json"}, data=json.dumps(payload_body))
+    #     response = self.policyguru.post("/write", headers={"Content-Type": "application/json"}, data=json.dumps(payload_body))
     #     print(json.dumps(response.json, indent=4))
     #     self.assertEqual(200, response.status_code)
     #

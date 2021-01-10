@@ -3,8 +3,8 @@ import json
 from starlette.testclient import TestClient
 from policy_sentry.util.policy_files import get_sid_names_from_policy
 from policy_sentry.command.write_policy import write_policy_with_template
-from app.api.write_iam_policy import WritePolicyInput, WritePolicyTemplate, ActionsForServicesWithoutResourceConstraintSupport, ActionsForResourcesAtAccessLevel
-from app.main import app
+from policyguru.api.write_iam_policy import WritePolicyInput, WritePolicyTemplate, ActionsForServicesWithoutResourceConstraintSupport, ActionsForResourcesAtAccessLevel
+from policyguru.main import app
 
 client = TestClient(app)
 

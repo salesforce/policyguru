@@ -25,10 +25,8 @@ This REST API also supports the PolicyGuru Terraform provider, which allows you 
       * [Environment setup](#environment-setup)
       * [Testing](#testing)
       * [Running locally](#running-locally)
-         * [Invoking Lambdas locally](#invoking-lambdas-locally)
-            * [Option 1: Leverage PyInvoke command](#option-1-leverage-pyinvoke-command)
-            * [Option 2: Run individual commands](#option-2-run-individual-commands)
-         * [Local Flask API](#local-fastapi)
+         * [Option 1: Local FastAPI](#option-1-local-fastapi)
+         * [Option 2: Docker](#option-2-docker)
    * [Resources](#resources)
 
 <!-- Added by: kmcquade, at: Thu Dec 17 09:58:13 EST 2020 -->
@@ -542,39 +540,7 @@ pytest -v
 
 ## Running locally
 
-### Invoking Lambdas locally
-
-#### Option 1: Leverage PyInvoke command
-
-Alternatively, you can just run the PyInvoke commands that will run all of the above:
-
-```bash
-# list available PyInvoke commands
-invoke -l
-invoke integration.sam-invoke
-```
-
-#### Option 2: Run individual commands
-
-First you will need to build the serverless application using the `sam build --use-container`. This command gathers the build artifacts of your application's dependencies and places them in the proper format and location for next steps, such as locally testing, packaging, and deploying.
-
-* Run the build command:
-
-```bash
-sam build --use-container
-```
-
-* Run functions locally and invoke them with the `sam local invoke` command.
-
-```bash
-sam local invoke WritePolicyFunction --event events/write-policy-mock.json
-sam local invoke ScanPolicyFunction --event events/scan-policy-mock.json
-sam local invoke QueryActionsFunction --event events/query-actions-mock.json
-sam local invoke QueryResourcesFunction --event events/query-resources-mock.json
-sam local invoke QueryConditionsFunction --event events/query-conditions-mock.json
-```
-
-### Local FastAPI
+### Option 1: Local FastAPI
 
 We set up a FastAPI option for local testing and development purposes - particularly for testing out the UI.
 
@@ -591,6 +557,19 @@ pip3 install -r requirements-dev.txt
 # Run the API locally. You can access the docs at localhost:8080/docs
 make run
 ```
+
+### Option 2: Docker
+
+You can build a Docker container that hosts this locally. This is hosted on the **8002** local port.
+
+* Build the docker container with docker-compose:
+
+```bash
+make run-docker
+```
+
+* You can access the docs at the **8002** port: http://localhost:8002/docs
+
 
 # Resources
 
