@@ -34,4 +34,4 @@ app.include_router(root.router)
 app.include_router(scan_iam_policy.router)
 app.include_router(write_iam_policy.router)
 
-handler = Mangum(app, enable_lifespan=False)
+handler = Mangum(app, lifespan="off")
