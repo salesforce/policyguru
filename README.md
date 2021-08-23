@@ -70,7 +70,7 @@ aws route53 create-hosted-zone --name $DOMAIN_NAME
 
 ### Step 3: Create an S3 bucket to hold the SAM CLI artifacts
 
-The Severless Application Model (SAM) packages applications by creating a `.zip` file of your code and dependencies and uploading the file to an S3 bucket so it can be consumed by CloudFormation.
+The Serverless Application Model (SAM) packages applications by creating a `.zip` file of your code and dependencies and uploading the file to an S3 bucket so it can be consumed by CloudFormation.
 
 While we could use the `sam deploy --guided` command in development (because the guided mode automatically creates the S3 bucket, whereas the non-guided mode does not), that can be error prone for a tutorial, and is not conducive to CI/CD pipelines.
 
