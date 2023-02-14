@@ -1,6 +1,6 @@
 fastapi==0.63.0
 uvicorn==0.13.2
-starlette==0.13.6
+starlette==0.25.0
 mangum>=0.10.0
 policy_sentry==0.11.2
 cloudsplaining==0.2.4
