@@ -1,5 +1,5 @@
 policy_sentry==0.10.0
 cloudsplaining==0.2.3
-flask==1.1.2
+flask==2.2.5
 flask_swagger==0.2.14
 urllib3==1.25.11
